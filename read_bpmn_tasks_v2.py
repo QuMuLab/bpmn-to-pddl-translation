@@ -136,19 +136,36 @@ class BPMNParser:
         merged_elements = []
         seen = {}
 
+        # Build outgoing map first for comparison
+        outgoing_map = {}
+        for flow in self.get_elements_by_type('Sequence Flow'):
+            outgoing_map.setdefault(flow.sourceRef, []).append(flow.targetRef)
+
         for e in self.elements:
             if e.type in ['Sequence Flow', 'Message Flow', 'Parallel Gateway', 'Exclusive Gateway', 'Inclusive Gateway', 'Event-Based Gateway']:
                 merged_elements.append(e)
                 continue
 
             key = (e.type, e.name)
-            if key not in seen:
+            e_outgoing = set(outgoing_map.get(e.id, []))
+
+            # Find a previously seen element with same type, name, and outgoing targets
+            match = None
+            for seen_key, seen_elem in seen.items():
+                if seen_key != key:
+                    continue
+                seen_outgoing = set(outgoing_map.get(seen_elem.id, []))
+                if e_outgoing == seen_outgoing:
+                    match = seen_elem
+                    break
+
+            if match is None:
                 seen[key] = e
                 merged_elements.append(e)
             else:
-                # Existing element is primary
-                primary = seen[key]
+                primary = match
                 self.id_mapping[e.id] = primary.id  # duplicate maps to primary ID
+
                 # Merge additional attributes
                 for attr, value in e.__dict__.items():
                     if attr not in ['type', 'id', 'name']:
@@ -509,7 +526,7 @@ class BPMNParser:
 
 
 if __name__ == '__main__':
-    file_path = 'bpmn_diagrams/order_pizza_2.bpmn'
+    file_path = 'bpmn_diagrams/place_order.bpmn'
     domain_name = "place_order_no_flatten"
     parser = BPMNParser(file_path)
     parser.parse()
