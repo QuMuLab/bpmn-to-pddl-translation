@@ -1,0 +1,5 @@
+(define (problem p1-bpmn-flatten)
+  (:domain pizza_order_flatten)
+  (:init StartEvent_1)
+  (:goal (and (Event_1o7q4l5)))
+)

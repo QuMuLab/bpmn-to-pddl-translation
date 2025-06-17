@@ -1,0 +1,28 @@
+digraph {
+  0 [label="---", shape=doublecircle];
+  6 [label="parallel_gateway_1la9igl"];
+  7 [label="exclusive_gateway_1yg27bh"];
+  8 [label="use_old_product_from_stock"];
+  9 [label="exclusive_order_value_above_25_000___"];
+  10 [label="process_order"];
+  11 [label="start_order_received", shape=box];
+  12 [label="produce_fresh_product"];
+  3 [label="parallel_gateway_04hl5tz"];
+  4 [label="package_goods"];
+  5 [label="organize_shipment"];
+  1 [label="goal_order_processed"];
+  2 [label="ship_order"];
+  6 -> 5;
+  7 -> 6;
+  8 -> 7;
+  9 -> 12;
+  9 -> 8;
+  10 -> 9;
+  11 -> 10;
+  12 -> 7;
+  3 -> 2;
+  4 -> 3;
+  5 -> 4;
+  1 -> 0;
+  2 -> 1;
+}

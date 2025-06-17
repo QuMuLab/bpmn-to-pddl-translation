@@ -1,0 +1,23 @@
+digraph {
+  0 [label="---", shape=doublecircle];
+  1 [label="goal_pizza_eaten"];
+  2 [label="eat_pizza"];
+  3 [label="event_gateway_00a8n5n"];
+  4 [label="order_pizza"];
+  5 [label="start_pizza_wanted", shape=box];
+  8 [label="goal_order_cancelled"];
+  7 [label="complain_to_delivery_service"];
+  6 [label="event_gateway_1ushrpr"];
+  9 [label="cancel_order"];
+  1 -> 0;
+  2 -> 1;
+  3 -> 7;
+  3 -> 2;
+  4 -> 3;
+  5 -> 4;
+  8 -> 0;
+  7 -> 6;
+  6 -> 2;
+  6 -> 9;
+  9 -> 8;
+}
