@@ -242,15 +242,16 @@ class BPMNParser:
 
         def get_immediate_preconditions(element_id):
             preconditions = set()
-            for src_id in incoming.get(element_id, []):
+            incoming_ids = incoming.get(element_id, [])
+            if not incoming_ids:
+                if len(start_events) == 1:
+                    preconditions.add(f"({sanitize_name(start_events[0].id)})")
+                return preconditions
+
+            for src_id in incoming_ids:
                 src_elem = elements_by_id.get(src_id)
                 if src_elem:
-                    if src_elem.type == "Exclusive Gateway":
-                        preconditions.add(f"({sanitize_name(element_id)})")
-                    elif "Event" in src_elem.type or "Gateway" in src_elem.type:
-                        preconditions.add(f"({sanitize_name(src_id)})")
-            if not preconditions and len(start_events) == 1:
-                preconditions.add(f"({sanitize_name(start_events[0].id)})")
+                    preconditions.add(f"({sanitize_name(src_id)})")
             return preconditions
         
         # Identify converging gateways
