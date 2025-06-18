@@ -240,18 +240,23 @@ class BPMNParser:
             domain += f"    :effect (and (oneof {' '.join(f'({p})' for p in start_preds)}) (started))\n"
             domain += "  )\n\n"
 
-        def get_immediate_preconditions(element_id):
+        def get_immediate_preconditions(element_id, override_src=None):
             preconditions = set()
-            incoming_ids = incoming.get(element_id, [])
-            if not incoming_ids:
-                if len(start_events) == 1:
-                    preconditions.add(f"({sanitize_name(start_events[0].id)})")
-                return preconditions
-
-            for src_id in incoming_ids:
+            sources = [override_src] if override_src else incoming.get(element_id, [])
+            for src_id in sources:
                 src_elem = elements_by_id.get(src_id)
                 if src_elem:
-                    preconditions.add(f"({sanitize_name(src_id)})")
+                    if src_elem.type == "Exclusive Gateway":
+                        # Controlled by gateway, wait for the element to activate
+                        preconditions.add(f"({sanitize_name(element_id)})")
+                    elif "Event" in src_elem.type or "Gateway" in src_elem.type:
+                        # Precondition is the source (event fired or gateway unblocked)
+                        preconditions.add(f"({sanitize_name(src_id)})")
+                    else:
+                        # Coming from a task: this element must be ready, not the source
+                        preconditions.add(f"({sanitize_name(element_id)})")
+            if not preconditions and len(start_events) == 1:
+                preconditions.add(f"({sanitize_name(start_events[0].id)})")
             return preconditions
         
         # Identify converging gateways
@@ -410,16 +415,7 @@ class BPMNParser:
 
             if "Task" in e.type:
                 incoming_ids = incoming.get(e.id, [])
-                has_control_gateway = any(
-                    elements_by_id.get(src_id) and
-                    "Gateway" in elements_by_id[src_id].type and
-                    ("Exclusive" in elements_by_id[src_id].type or "Parallel" in elements_by_id[src_id].type)
-                    for src_id in incoming_ids
-                )
-                if has_control_gateway:
-                    preconditions = {f"({sanitize_name(e.id)})"}
-                else:
-                    preconditions = get_immediate_preconditions(e.id)
+                merged_sources = set(get_merged_id(src_id) for src_id in incoming_ids)
 
                 outgoing_targets = outgoing.get(e.id, [])
                 effects = []
@@ -435,24 +431,73 @@ class BPMNParser:
                             for next_id in outgoing.get(target_id, []):
                                 next_elem = elements_by_id.get(next_id)
                                 if next_elem and "Gateway" in next_elem.type:
-                                    branch_effects.append(f"({sanitize_name(next_id)})")
+                                    branch_effects.append(f"({sanitize_name(next_elem.id)})")
                         if len(branch_effects) == 1:
                             oneof_effects.append(branch_effects[0])
                         else:
                             oneof_effects.append(f"(and {' '.join(branch_effects)})")
 
-                action_name = sanitize_name(e.name.replace(" ", "_")) if e.name else sanitize_name(e.id)
-                domain += f"  (:action {action_name}\n"
-                domain += f"    :precondition (and {' '.join(sorted(preconditions))})\n"
-                domain += f"    :effect (and"
-                if effects:
-                    domain += f" {' '.join(sorted(effects))}"
-                if oneof_effects:
-                    domain += f" (oneof {' '.join(oneof_effects)})"
-                for pre in sorted(preconditions):
-                    domain += f" (not {pre})"
-                domain += ")\n"
-                domain += "  )\n\n"
+                # Generate multiple actions if there are unmerged incoming sources
+                if len(merged_sources) > 1:
+                    for src_id in incoming_ids:
+                        src_elem = elements_by_id.get(src_id)
+                        if not src_elem:
+                            continue
+
+                        # Unique action name suffix
+                        suffix = sanitize_name(src_elem.id)
+                        action_name = f"{sanitize_name(e.name or e.id)}_from_{suffix}"
+
+                        # Use only this source in the precondition
+                        def get_preconds_for_source(task_id, src_id):
+                            src_elem = elements_by_id.get(src_id)
+                            if src_elem:
+                                if src_elem.type == "Exclusive Gateway":
+                                    return {f"({sanitize_name(task_id)})"}
+                                elif "Event" in src_elem.type or "Gateway" in src_elem.type:
+                                    return {f"({sanitize_name(src_id)})"}
+                                else:
+                                    return {f"({sanitize_name(src_id)})"}
+                            return set()
+
+                        preconditions = get_preconds_for_source(e.id, src_id)
+
+                        domain += f"  (:action {action_name}\n"
+                        domain += f"    :precondition (and {' '.join(sorted(preconditions))})\n"
+                        domain += f"    :effect (and"
+                        if effects:
+                            domain += f" {' '.join(sorted(effects))}"
+                        if oneof_effects:
+                            domain += f" (oneof {' '.join(oneof_effects)})"
+                        for pre in sorted(preconditions):
+                            domain += f" (not {pre})"
+                        domain += ")\n"
+                        domain += "  )\n\n"
+                else:
+                    # Regular single-source case
+                    has_control_gateway = any(
+                        elements_by_id.get(src_id) and
+                        "Gateway" in elements_by_id[src_id].type and
+                        ("Exclusive" in elements_by_id[src_id].type or "Parallel" in elements_by_id[src_id].type)
+                        for src_id in incoming_ids
+                    )
+                    if has_control_gateway:
+                        preconditions = {f"({sanitize_name(e.id)})"}
+                    else:
+                        preconditions = get_immediate_preconditions(e.id)
+
+                    action_name = sanitize_name(e.name.replace(" ", "_")) if e.name else sanitize_name(e.id)
+                    domain += f"  (:action {action_name}\n"
+                    domain += f"    :precondition (and {' '.join(sorted(preconditions))})\n"
+                    domain += f"    :effect (and"
+                    if effects:
+                        domain += f" {' '.join(sorted(effects))}"
+                    if oneof_effects:
+                        domain += f" (oneof {' '.join(oneof_effects)})"
+                    for pre in sorted(preconditions):
+                        domain += f" (not {pre})"
+                    domain += ")\n"
+                    domain += "  )\n\n"
 
         # End events
         for end_event in self.get_elements_by_type("End Event"):

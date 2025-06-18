@@ -46,8 +46,8 @@
   )
 
   (:action send_reminder
-    :precondition (and (Task_02fdytg))
-    :effect (and (EventBasedGateway_0qdxz70) (not (Task_02fdytg)))
+    :precondition (and (Task_12lthpj))
+    :effect (and (EventBasedGateway_0qdxz70) (not (Task_12lthpj)))
   )
 
   (:action check_reasoning
@@ -60,9 +60,14 @@
     :effect (and (EndEvent_01a6rq8) (not (Task_1qlbv5i)))
   )
 
-  (:action hand_over_to_collection_agency
+  (:action hand_over_to_collection_agency_from_ExclusiveGateway_0lk2nir
     :precondition (and (Task_1w7bb1w))
     :effect (and (EndEvent_0nfuudw) (not (Task_1w7bb1w)))
+  )
+
+  (:action hand_over_to_collection_agency_from_IntermediateCatchEvent_037r6f2
+    :precondition (and (IntermediateCatchEvent_037r6f2))
+    :effect (and (EndEvent_0nfuudw) (not (IntermediateCatchEvent_037r6f2)))
   )
 
   (:action make_booking
@@ -71,8 +76,8 @@
   )
 
   (:action close_case
-    :precondition (and (Task_1bwmf45))
-    :effect (and (EndEvent_01a6rq8) (not (Task_1bwmf45)))
+    :precondition (and (Task_0yan60f))
+    :effect (and (EndEvent_01a6rq8) (not (Task_0yan60f)))
   )
 
   (:action event_EventBasedGateway_0qdxz70
