@@ -1,0 +1,32 @@
+digraph {
+  0 [label="---", shape=doublecircle];
+  1 [label="goal_scoring_request_handled"];
+  2 [label="send_credit_score"];
+  3 [label="exclusive_exclusivegateway_11dldcm"];
+  4 [label="event_eventbasedgateway_02s95tm"];
+  5 [label="request_credit_score"];
+  6 [label="start_process", shape=box];
+  7 [label="report_delay"];
+  12 [label="compute_credit_score__level_2_"];
+  13 [label="report_delay_2"];
+  10 [label="exclusive_score_available_"];
+  11 [label="compute_credit_score__level_1_"];
+  8 [label="exclusive_exclusivegateway_125lzox"];
+  9 [label="send_credit_score_from_exclusivegateway_0rtdod4"];
+  1 -> 0;
+  2 -> 1;
+  3 -> 2;
+  4 -> 7;
+  4 -> 3;
+  5 -> 4;
+  6 -> 5;
+  6 -> 11;
+  7 -> 3;
+  12 -> 9;
+  13 -> 12;
+  10 -> 13;
+  10 -> 9;
+  11 -> 10;
+  8 -> 1;
+  9 -> 8;
+}

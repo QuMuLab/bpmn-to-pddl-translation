@@ -86,6 +86,7 @@ class BPMNParser:
         self.add_elements('eventBasedGateway', 'Event-Based Gateway')
         self.add_elements('exclusiveGateway', 'Exclusive Gateway')
         self.add_elements('parallelGateway', 'Parallel Gateway')
+        self.add_elements('inclusiveGateway', 'Inclusive Gateway')
         self.add_elements('sequenceFlow', 'Sequence Flow', ['sourceRef', 'targetRef'])
 
         # Message Flows
@@ -264,6 +265,32 @@ class BPMNParser:
             elem = elements_by_id.get(elem_id)
             return elem and "Gateway" in elem.type and len(incoming.get(elem_id, [])) > 1
         
+        used_action_names = {}
+        def get_unique_action_name(base):
+            count = used_action_names.get(base, 0)
+            if count == 0:
+                used_action_names[base] = 1
+                return base
+            else:
+                used_action_names[base] += 1
+                return f"{base}_{used_action_names[base]}"
+            
+        def get_effects_with_following_gateways(target_ids):
+            effects = []
+            for target_id in target_ids:
+                branch_effects = {f"({sanitize_name(target_id)})"}  # Use set to avoid duplicates
+                target_elem = elements_by_id.get(target_id)
+                if target_elem and "Event" in target_elem.type:
+                    for next_id in outgoing.get(target_id, []):
+                        next_elem = elements_by_id.get(next_id)
+                        if next_elem and "Gateway" in next_elem.type:
+                            branch_effects.add(f"({sanitize_name(next_elem.id)})")  # add to set
+                if len(branch_effects) == 1:
+                    effects.append(next(iter(branch_effects)))  # only one predicate
+                else:
+                    effects.append(f"(and {' '.join(branch_effects)})")
+            return effects
+        
         # Handle Parallel Gateways
         for e in self.elements:
             if e.id in merged_tasks or e.id in skipped_gateways:
@@ -419,10 +446,10 @@ class BPMNParser:
 
                 outgoing_targets = outgoing.get(e.id, [])
                 effects = []
-                oneof_effects = []
+                oneof_effects_set = set()
 
                 if len(outgoing_targets) == 1:
-                    effects = [f"({sanitize_name(outgoing_targets[0])})"]
+                    effects = get_effects_with_following_gateways(outgoing_targets)
                 elif len(outgoing_targets) > 1:
                     for target_id in outgoing_targets:
                         branch_effects = [f"({sanitize_name(target_id)})"]
@@ -432,23 +459,21 @@ class BPMNParser:
                                 next_elem = elements_by_id.get(next_id)
                                 if next_elem and "Gateway" in next_elem.type:
                                     branch_effects.append(f"({sanitize_name(next_elem.id)})")
-                        if len(branch_effects) == 1:
-                            oneof_effects.append(branch_effects[0])
-                        else:
-                            oneof_effects.append(f"(and {' '.join(branch_effects)})")
+                        effect_str = f"(and {' '.join(branch_effects)})" if len(branch_effects) > 1 else branch_effects[0]
+                        oneof_effects_set.add(effect_str)
 
-                # Generate multiple actions if there are unmerged incoming sources
+                oneof_effects = sorted(oneof_effects_set)
+
                 if len(merged_sources) > 1:
                     for src_id in incoming_ids:
                         src_elem = elements_by_id.get(src_id)
                         if not src_elem:
                             continue
 
-                        # Unique action name suffix
                         suffix = sanitize_name(src_elem.id)
-                        action_name = f"{sanitize_name(e.name or e.id)}_from_{suffix}"
+                        base_name = f"{sanitize_name(e.name or e.id)}_from_{suffix}"
+                        action_name = get_unique_action_name(base_name)
 
-                        # Use only this source in the precondition
                         def get_preconds_for_source(task_id, src_id):
                             src_elem = elements_by_id.get(src_id)
                             if src_elem:
@@ -466,34 +491,44 @@ class BPMNParser:
                         domain += f"    :precondition (and {' '.join(sorted(preconditions))})\n"
                         domain += f"    :effect (and"
                         if effects:
-                            domain += f" {' '.join(sorted(effects))}"
+                            domain += f" {' '.join(sorted(set(effects)))}"
                         if oneof_effects:
-                            domain += f" (oneof {' '.join(oneof_effects)})"
+                            unique_effects = list(dict.fromkeys(oneof_effects))  # preserve order, remove duplicates
+                            if len(unique_effects) == 1:
+                                domain += f" {unique_effects[0]}"
+                            else:
+                                domain += f" (oneof {' '.join(unique_effects)})"
                         for pre in sorted(preconditions):
                             domain += f" (not {pre})"
                         domain += ")\n"
                         domain += "  )\n\n"
                 else:
-                    # Regular single-source case
                     has_control_gateway = any(
                         elements_by_id.get(src_id) and
                         "Gateway" in elements_by_id[src_id].type and
                         ("Exclusive" in elements_by_id[src_id].type or "Parallel" in elements_by_id[src_id].type)
                         for src_id in incoming_ids
                     )
+
                     if has_control_gateway:
                         preconditions = {f"({sanitize_name(e.id)})"}
                     else:
                         preconditions = get_immediate_preconditions(e.id)
 
-                    action_name = sanitize_name(e.name.replace(" ", "_")) if e.name else sanitize_name(e.id)
+                    base_name = sanitize_name(e.name.replace(" ", "_")) if e.name else sanitize_name(e.id)
+                    action_name = get_unique_action_name(base_name)
+
                     domain += f"  (:action {action_name}\n"
                     domain += f"    :precondition (and {' '.join(sorted(preconditions))})\n"
                     domain += f"    :effect (and"
                     if effects:
-                        domain += f" {' '.join(sorted(effects))}"
+                        domain += f" {' '.join(sorted(set(effects)))}"
                     if oneof_effects:
-                        domain += f" (oneof {' '.join(oneof_effects)})"
+                        unique_effects = list(dict.fromkeys(oneof_effects))  # remove dupes
+                        if len(unique_effects) == 1:
+                            domain += f" {unique_effects[0]}"
+                        else:
+                            domain += f" (oneof {' '.join(unique_effects)})"
                     for pre in sorted(preconditions):
                         domain += f" (not {pre})"
                     domain += ")\n"
@@ -518,58 +553,57 @@ class BPMNParser:
         not_flattened_folder = os.path.join(output_folder, "not_flattened")
         os.makedirs(not_flattened_folder, exist_ok=True)
 
-        # Group predicates by type (optional but cleaner)
-        events = [p for p in predicates if "Event" in p]
-        gateways = [p for p in predicates if "Gateway" in p]
-        tasks = [p for p in predicates if "Activity" in p or "Task" in p]
+        # Step 1: Separate into types, and prevent overlap
+        gateways = set(p for p in predicates if "Gateway" in p)
+        events = set(p for p in predicates if "Event" in p)
+        tasks = set(p for p in predicates if "Activity" in p or "Task" in p)
 
+        # Remove duplicates across types — priority: gateway > event
+        events -= gateways  # remove gateway objects from event type
+
+        # Step 2: Build object section
         object_section = ""
         if tasks:
-            object_section += "    " + " ".join(tasks) + " - task\n"
+            object_section += "    " + " ".join(sorted(tasks)) + " - task\n"
         if events:
-            object_section += "    " + " ".join(events) + " - event\n"
+            object_section += "    " + " ".join(sorted(events)) + " - event\n"
         if gateways:
-            object_section += "    " + " ".join(gateways) + " - gateway\n"
+            object_section += "    " + " ".join(sorted(gateways)) + " - gateway\n"
 
         # Shared goal
         goal_state = "(and (done))"
 
-        # Generate problem p0.pddl with no initialized predicates
+        # Problem 0 (no start events initialized)
         empty_init_path = os.path.join(not_flattened_folder, "p0.pddl")
         p0_content = f"""(define (problem p0-bpmn-no-flatten)
-    (:domain {domain_name})
-    (:objects
+        (:domain {domain_name})
+        (:objects
     {object_section.strip()}
-    )
-    (:init)
-    (:goal {goal_state})
-    )
+        )
+        (:init)
+        (:goal {goal_state})
+        )
     """
         with open(empty_init_path, 'w') as f:
             f.write(p0_content)
 
-        # Now generate problem files per start event
-        count = 0
-        for start_event in start_events:
-            count += 1
+        # Problem files for each start event
+        for count, start_event in enumerate(start_events, 1):
             problem_name = f"p0{count}"
             file_path = os.path.join(not_flattened_folder, f"{problem_name}.pddl")
 
-            # Initial state: only start_event is true
             init_state = [f"({start_event})"]
-
             problem_content = f"""(define (problem {problem_name}-bpmn-no-flatten)
-    (:domain {domain_name})
-    (:objects
+        (:domain {domain_name})
+        (:objects
     {object_section.strip()}
-    )
-    (:init {' '.join(init_state)})
-    (:goal {goal_state})
-    )
+        )
+        (:init {' '.join(init_state)})
+        (:goal {goal_state})
+        )
     """
             with open(file_path, 'w') as f:
                 f.write(problem_content)
-
 
 if __name__ == '__main__':
     file_path = 'bpmn_diagrams/place_order.bpmn'

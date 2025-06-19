@@ -1,0 +1,351 @@
+{
+
+  "init": "5",
+  "goal": "0",
+  "nodes" : {
+    "0": {
+      "expected_successor": false,
+      "action": "---",
+      "state": "0x6652b00",
+      "distance": 0,
+      "is_relevant": 1,
+      "is_goal": 1,
+      "is_sc": 1,
+      "successors": [
+
+       ]
+    },
+    "1": {
+      "expected_successor": "0",
+      "action": "goal_case_closed",
+      "state": "0x6655e00",
+      "distance": 1,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "goal_case_closed",
+            "successor_id": "0"
+        }
+       ]
+    },
+    "2": {
+      "expected_successor": "1",
+      "action": "close_case",
+      "state": "0x6655f20",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "close_case",
+            "successor_id": "1"
+        }
+       ]
+    },
+    "3": {
+      "expected_successor": "2",
+      "action": "exclusive_recourse_possible_",
+      "state": "0x6658480",
+      "distance": 3,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "exclusive_recourse_possible__DETDUP_1",
+            "successor_id": "10"
+        },
+        {
+            "outcome_label": "exclusive_recourse_possible__DETDUP_2",
+            "successor_id": "2"
+        }
+       ]
+    },
+    "4": {
+      "expected_successor": "3",
+      "action": "check_case",
+      "state": "0x6659f20",
+      "distance": 4,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "check_case",
+            "successor_id": "3"
+        }
+       ]
+    },
+    "5": {
+      "expected_successor": "4",
+      "action": "start_probable_recourse_detected",
+      "state": "0x6659a40",
+      "distance": 5,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "start_probable_recourse_detected",
+            "successor_id": "4"
+        }
+       ]
+    },
+    "10": {
+      "expected_successor": "9",
+      "action": "send_request_for_payment",
+      "state": "0x665f990",
+      "distance": 5,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "send_request_for_payment",
+            "successor_id": "9"
+        }
+       ]
+    },
+    "7": {
+      "expected_successor": "6",
+      "action": "hand_over_to_collection_agency_from_intermediatecatchevent_037r6f2",
+      "state": "0x6660480",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "hand_over_to_collection_agency_from_intermediatecatchevent_037r6f2",
+            "successor_id": "6"
+        }
+       ]
+    },
+    "8": {
+      "expected_successor": "7",
+      "action": "event_eventbasedgateway_0qdxz70",
+      "state": "0x6660840",
+      "distance": 3,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "event_eventbasedgateway_0qdxz70_DETDUP_1",
+            "successor_id": "15"
+        },
+        {
+            "outcome_label": "event_eventbasedgateway_0qdxz70_DETDUP_2",
+            "successor_id": "7"
+        },
+        {
+            "outcome_label": "event_eventbasedgateway_0qdxz70_DETDUP_3",
+            "successor_id": "12"
+        }
+       ]
+    },
+    "13": {
+      "expected_successor": "1",
+      "action": "close_case_2",
+      "state": "0x665e5e0",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "close_case_2",
+            "successor_id": "1"
+        }
+       ]
+    },
+    "12": {
+      "expected_successor": "11",
+      "action": "make_booking",
+      "state": "0x665f030",
+      "distance": 3,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "make_booking",
+            "successor_id": "11"
+        }
+       ]
+    },
+    "16": {
+      "expected_successor": "6",
+      "action": "hand_over_to_collection_agency_from_exclusivegateway_0lk2nir",
+      "state": "0x6667040",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "hand_over_to_collection_agency_from_exclusivegateway_0lk2nir",
+            "successor_id": "6"
+        }
+       ]
+    },
+    "9": {
+      "expected_successor": "8",
+      "action": "send_reminder",
+      "state": "0x6660690",
+      "distance": 4,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "send_reminder",
+            "successor_id": "8"
+        }
+       ]
+    },
+    "11": {
+      "expected_successor": "1",
+      "action": "close_case_3",
+      "state": "0x665f050",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "close_case_3",
+            "successor_id": "1"
+        }
+       ]
+    },
+    "6": {
+      "expected_successor": "0",
+      "action": "goal_case_open",
+      "state": "0x6660310",
+      "distance": 1,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "goal_case_open",
+            "successor_id": "0"
+        }
+       ]
+    },
+    "14": {
+      "expected_successor": "13",
+      "action": "exclusive_ok_",
+      "state": "0x6668ad0",
+      "distance": 3,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "exclusive_ok__DETDUP_1",
+            "successor_id": "13"
+        },
+        {
+            "outcome_label": "exclusive_ok__DETDUP_2",
+            "successor_id": "16"
+        }
+       ]
+    },
+    "15": {
+      "expected_successor": "14",
+      "action": "check_reasoning",
+      "state": "0x665f780",
+      "distance": 4,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "check_reasoning",
+            "successor_id": "14"
+        }
+       ]
+    }
+  },
+  "edges" : [
+      ["1", ">", "0"],
+      ["2", ">", "1"],
+      ["3", ">", "10"],
+      ["3", ">", "2"],
+      ["4", ">", "3"],
+      ["5", ">", "4"],
+      ["10", ">", "9"],
+      ["7", ">", "6"],
+      ["8", ">", "15"],
+      ["8", ">", "7"],
+      ["8", ">", "12"],
+      ["13", ">", "1"],
+      ["12", ">", "11"],
+      ["16", ">", "6"],
+      ["9", ">", "8"],
+      ["11", ">", "1"],
+      ["6", ">", "0"],
+      ["14", ">", "13"],
+      ["14", ">", "16"],
+      ["15", ">", "14"]
+  ],
+  "states" : {
+    "0x6652b00": [
+      "Atom done()"
+    ],
+    "0x6655e00": [
+      "Atom endevent_01a6rq8()"
+    ],
+    "0x6655f20": [
+      "Atom task_04aofbe()"
+    ],
+    "0x6658480": [
+      "Atom exclusivegateway_092mc05()"
+    ],
+    "0x6659f20": [
+      "Atom startevent_1mnut37()"
+    ],
+    "0x6659a40": [
+      "NegatedAtom started()",
+      "NegatedAtom startevent_1mnut37()"
+    ],
+    "0x665f990": [
+      "Atom task_02fdytg()"
+    ],
+    "0x6660480": [
+      "Atom intermediatecatchevent_037r6f2()"
+    ],
+    "0x6660840": [
+      "Atom eventbasedgateway_0qdxz70()"
+    ],
+    "0x665e5e0": [
+      "Atom task_1qlbv5i()"
+    ],
+    "0x665f030": [
+      "Atom intermediatecatchevent_0d430z1()"
+    ],
+    "0x6667040": [
+      "Atom task_1w7bb1w()"
+    ],
+    "0x6660690": [
+      "Atom task_12lthpj()"
+    ],
+    "0x665f050": [
+      "Atom task_0yan60f()"
+    ],
+    "0x6660310": [
+      "Atom endevent_0nfuudw()"
+    ],
+    "0x6668ad0": [
+      "Atom exclusivegateway_0lk2nir()"
+    ],
+    "0x665f780": [
+      "Atom intermediatecatchevent_1ias0p2()"
+    ]
+   }
+}

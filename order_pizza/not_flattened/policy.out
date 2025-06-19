@@ -6,7 +6,7 @@
     "0": {
       "expected_successor": false,
       "action": "---",
-      "state": "0x5243dc0",
+      "state": "0x267b1dc0",
       "distance": 0,
       "is_relevant": 1,
       "is_goal": 1,
@@ -18,7 +18,7 @@
     "1": {
       "expected_successor": "0",
       "action": "goal_pizza_eaten",
-      "state": "0x5246290",
+      "state": "0x267b4290",
       "distance": 1,
       "is_relevant": 0,
       "is_goal": 0,
@@ -33,7 +33,7 @@
     "2": {
       "expected_successor": "1",
       "action": "eat_pizza",
-      "state": "0x52441c0",
+      "state": "0x267b21c0",
       "distance": 2,
       "is_relevant": 0,
       "is_goal": 0,
@@ -48,7 +48,7 @@
     "3": {
       "expected_successor": "2",
       "action": "event_gateway_00a8n5n",
-      "state": "0x5246210",
+      "state": "0x267b4210",
       "distance": 3,
       "is_relevant": 0,
       "is_goal": 0,
@@ -67,7 +67,7 @@
     "4": {
       "expected_successor": "3",
       "action": "order_pizza",
-      "state": "0x524a240",
+      "state": "0x267b8240",
       "distance": 4,
       "is_relevant": 0,
       "is_goal": 0,
@@ -82,7 +82,7 @@
     "5": {
       "expected_successor": "4",
       "action": "start_pizza_wanted",
-      "state": "0x5246d50",
+      "state": "0x267b4d50",
       "distance": 5,
       "is_relevant": 0,
       "is_goal": 0,
@@ -97,7 +97,7 @@
     "8": {
       "expected_successor": "0",
       "action": "goal_order_cancelled",
-      "state": "0x524d460",
+      "state": "0x267bb460",
       "distance": 1,
       "is_relevant": 0,
       "is_goal": 0,
@@ -112,7 +112,7 @@
     "7": {
       "expected_successor": "6",
       "action": "complain_to_delivery_service",
-      "state": "0x524c320",
+      "state": "0x267ba320",
       "distance": 4,
       "is_relevant": 0,
       "is_goal": 0,
@@ -127,7 +127,7 @@
     "6": {
       "expected_successor": "2",
       "action": "event_gateway_1ushrpr",
-      "state": "0x524a080",
+      "state": "0x267b8080",
       "distance": 3,
       "is_relevant": 0,
       "is_goal": 0,
@@ -146,7 +146,7 @@
     "9": {
       "expected_successor": "8",
       "action": "cancel_order",
-      "state": "0x524d7e0",
+      "state": "0x267bb7e0",
       "distance": 2,
       "is_relevant": 0,
       "is_goal": 0,
@@ -173,35 +173,35 @@
       ["9", ">", "8"]
   ],
   "states" : {
-    "0x5243dc0": [
+    "0x267b1dc0": [
       "Atom done()"
     ],
-    "0x5246290": [
+    "0x267b4290": [
       "Atom event_1o7q4l5()"
     ],
-    "0x52441c0": [
+    "0x267b21c0": [
       "Atom event_0p3pi5l()"
     ],
-    "0x5246210": [
+    "0x267b4210": [
       "Atom gateway_00a8n5n()"
     ],
-    "0x524a240": [
+    "0x267b8240": [
       "Atom startevent_1()"
     ],
-    "0x5246d50": [
+    "0x267b4d50": [
       "NegatedAtom started()",
       "NegatedAtom startevent_1()"
     ],
-    "0x524d460": [
+    "0x267bb460": [
       "Atom event_07029z3()"
     ],
-    "0x524c320": [
+    "0x267ba320": [
       "Atom event_1n3fu60()"
     ],
-    "0x524a080": [
+    "0x267b8080": [
       "Atom gateway_1ushrpr()"
     ],
-    "0x524d7e0": [
+    "0x267bb7e0": [
       "Atom event_1ylp3d5()"
     ]
    }

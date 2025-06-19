@@ -55,7 +55,7 @@
     :effect (and (ExclusiveGateway_0lk2nir) (not (IntermediateCatchEvent_1ias0p2)))
   )
 
-  (:action close_case
+  (:action close_case_2
     :precondition (and (Task_1qlbv5i))
     :effect (and (EndEvent_01a6rq8) (not (Task_1qlbv5i)))
   )
@@ -75,7 +75,7 @@
     :effect (and (Task_0yan60f) (not (IntermediateCatchEvent_0d430z1)))
   )
 
-  (:action close_case
+  (:action close_case_3
     :precondition (and (Task_0yan60f))
     :effect (and (EndEvent_01a6rq8) (not (Task_0yan60f)))
   )

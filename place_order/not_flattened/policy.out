@@ -6,7 +6,7 @@
     "0": {
       "expected_successor": false,
       "action": "---",
-      "state": "0x34a51550",
+      "state": "0x1b590550",
       "distance": 0,
       "is_relevant": 1,
       "is_goal": 1,
@@ -18,7 +18,7 @@
     "6": {
       "expected_successor": "5",
       "action": "parallel_gateway_1la9igl",
-      "state": "0x34a5d100",
+      "state": "0x1b59c100",
       "distance": 6,
       "is_relevant": 0,
       "is_goal": 0,
@@ -33,7 +33,7 @@
     "7": {
       "expected_successor": "6",
       "action": "exclusive_gateway_1yg27bh",
-      "state": "0x34a56160",
+      "state": "0x1b595160",
       "distance": 7,
       "is_relevant": 0,
       "is_goal": 0,
@@ -48,7 +48,7 @@
     "8": {
       "expected_successor": "7",
       "action": "use_old_product_from_stock",
-      "state": "0x34a562f0",
+      "state": "0x1b5952f0",
       "distance": 8,
       "is_relevant": 0,
       "is_goal": 0,
@@ -63,7 +63,7 @@
     "9": {
       "expected_successor": "8",
       "action": "exclusive_order_value_above_25_000___",
-      "state": "0x34a56480",
+      "state": "0x1b595480",
       "distance": 9,
       "is_relevant": 0,
       "is_goal": 0,
@@ -82,7 +82,7 @@
     "10": {
       "expected_successor": "9",
       "action": "process_order",
-      "state": "0x34a56610",
+      "state": "0x1b595610",
       "distance": 10,
       "is_relevant": 0,
       "is_goal": 0,
@@ -97,7 +97,7 @@
     "11": {
       "expected_successor": "10",
       "action": "start_order_received",
-      "state": "0x34a567a0",
+      "state": "0x1b5957a0",
       "distance": 11,
       "is_relevant": 0,
       "is_goal": 0,
@@ -112,7 +112,7 @@
     "12": {
       "expected_successor": "7",
       "action": "produce_fresh_product",
-      "state": "0x34a62050",
+      "state": "0x1b5a1050",
       "distance": 8,
       "is_relevant": 0,
       "is_goal": 0,
@@ -127,7 +127,7 @@
     "3": {
       "expected_successor": "2",
       "action": "parallel_gateway_04hl5tz",
-      "state": "0x34a54010",
+      "state": "0x1b593010",
       "distance": 3,
       "is_relevant": 0,
       "is_goal": 0,
@@ -142,7 +142,7 @@
     "4": {
       "expected_successor": "3",
       "action": "package_goods",
-      "state": "0x34a540b0",
+      "state": "0x1b5930b0",
       "distance": 4,
       "is_relevant": 0,
       "is_goal": 0,
@@ -157,7 +157,7 @@
     "5": {
       "expected_successor": "4",
       "action": "organize_shipment",
-      "state": "0x34a58060",
+      "state": "0x1b597060",
       "distance": 5,
       "is_relevant": 0,
       "is_goal": 0,
@@ -172,7 +172,7 @@
     "1": {
       "expected_successor": "0",
       "action": "goal_order_processed",
-      "state": "0x34a51e30",
+      "state": "0x1b590e30",
       "distance": 1,
       "is_relevant": 0,
       "is_goal": 0,
@@ -187,7 +187,7 @@
     "2": {
       "expected_successor": "1",
       "action": "ship_order",
-      "state": "0x34a54c50",
+      "state": "0x1b593c50",
       "distance": 2,
       "is_relevant": 0,
       "is_goal": 0,
@@ -216,48 +216,48 @@
       ["2", ">", "1"]
   ],
   "states" : {
-    "0x34a51550": [
+    "0x1b590550": [
       "Atom done()"
     ],
-    "0x34a5d100": [
+    "0x1b59c100": [
       "Atom gateway_1la9igl()"
     ],
-    "0x34a56160": [
+    "0x1b595160": [
       "Atom gateway_1yg27bh()"
     ],
-    "0x34a562f0": [
+    "0x1b5952f0": [
       "Atom activity_0hpwxsm()"
     ],
-    "0x34a56480": [
+    "0x1b595480": [
       "Atom gateway_1nuiirw()"
     ],
-    "0x34a56610": [
+    "0x1b595610": [
       "Atom startevent_1()"
     ],
-    "0x34a567a0": [
+    "0x1b5957a0": [
       "NegatedAtom started()",
       "NegatedAtom startevent_1()"
     ],
-    "0x34a62050": [
+    "0x1b5a1050": [
       "Atom activity_08v385w()"
     ],
-    "0x34a54010": [
+    "0x1b593010": [
       "NegatedAtom activity_1x6npxm()",
       "NegatedAtom activity_1wqi2kf()",
       "Atom gateway_04hl5tz()"
     ],
-    "0x34a540b0": [
+    "0x1b5930b0": [
       "Atom activity_1x6npxm()",
       "NegatedAtom activity_1wqi2kf()"
     ],
-    "0x34a58060": [
+    "0x1b597060": [
       "Atom activity_1x6npxm()",
       "Atom activity_1wqi2kf()"
     ],
-    "0x34a51e30": [
+    "0x1b590e30": [
       "Atom event_12xfkhi()"
     ],
-    "0x34a54c50": [
+    "0x1b593c50": [
       "Atom activity_1vopca8()"
     ]
    }
