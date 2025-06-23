@@ -218,11 +218,19 @@ class BPMNParser:
                         if pred not in predicates:
                             domain += f"    ({pred})\n"
                             predicates.add(pred)
+        
+        for e in self.elements:
+            if "Inclusive Gateway" in e.type and len(outgoing.get(e.id, [])) > 1:
+                gw_id = sanitize_name(e.id)
+                domain += f"    (at_least_one_branch_{gw_id})\n"
+                predicates.add(f"at_least_one_branch_{gw_id}")
+                for tgt in outgoing[e.id]:
+                    branch_id = sanitize_name(f"{e.id}_{tgt}")
+                    domain += f"    (branch_started_{branch_id})\n"
+                    predicates.add(f"branch_started_{branch_id}")
 
         domain += "    (done)\n"
         domain += "    (started)\n"
-        predicates.add("done")
-        predicates.add("started")
         domain += "  )\n\n"
 
         start_events = self.get_elements_by_type("Start Event")
@@ -236,28 +244,130 @@ class BPMNParser:
             domain += "  )\n\n"
         elif len(start_events) > 1:
             start_preds = [sanitize_name(e.id) for e in start_events]
-            domain += "  (:action start_process\n"
+            domain += f"  (:action start_process\n"
             domain += f"    :precondition (and (not (started)) {' '.join(f'(not ({p}))' for p in start_preds)})\n"
             domain += f"    :effect (and (oneof {' '.join(f'({p})' for p in start_preds)}) (started))\n"
             domain += "  )\n\n"
 
+        for e in self.elements:
+            if "Gateway" in e.type:
+                inc = incoming.get(e.id, [])
+                if len(inc) == 1:
+                    src_elem = elements_by_id.get(inc[0])
+                    if src_elem and "Start Event" in src_elem.type:
+                        start_id = sanitize_name(src_elem.id)
+                        gateway_id = sanitize_name(e.id)
+                        action_name = f"activate_{gateway_id}"
+                        domain += f"  (:action {action_name}\n"
+                        domain += f"    :precondition (and ({start_id}))\n"
+                        domain += f"    :effect (and ({gateway_id}))\n"
+                        domain += "  )\n\n"
+
+        def map_converging_to_diverging():
+            # Returns a dict { converging_id : diverging_id }
+            result = {}
+            for e in self.elements:
+                if "Inclusive Gateway" in e.type and len(outgoing.get(e.id, [])) > 1:
+                    # Found diverging gateway
+                    diverging_id = e.id
+                    # Traverse forward to find matching converging gateway(s)
+                    visited = set()
+                    queue = list(outgoing.get(e.id, []))
+                    while queue:
+                        current_id = queue.pop(0)
+                        if current_id in visited:
+                            continue
+                        visited.add(current_id)
+                        current_elem = elements_by_id.get(current_id)
+                        if not current_elem:
+                            continue
+                        if "Inclusive Gateway" in current_elem.type and len(incoming.get(current_id, [])) > 1:
+                            # Found matching converging gateway
+                            result[current_id] = diverging_id
+                        else:
+                            queue.extend(outgoing.get(current_id, []))
+            return result
+
+        converge_to_diverge = map_converging_to_diverging()
+        # Inclusive diverging gateway actions
+        for e in self.elements:
+            if "Inclusive Gateway" in e.type and len(outgoing.get(e.id, [])) > 1:
+                gw_id = sanitize_name(e.id)
+                domain += f"  (:action inclusive_diverge_{gw_id}\n"
+                domain += f"    :precondition (and ({gw_id}))\n"
+                domain += f"    :effect (and\n"
+                
+                for tgt in outgoing[e.id]:
+                    tgt_id = sanitize_name(tgt)
+                    branch_id = sanitize_name(f"{e.id}_{tgt}")
+                    domain += f"      (oneof\n"
+                    domain += f"        (and ({tgt_id}) (branch_started_{branch_id}) (at_least_one_branch_{gw_id}))\n"
+                    domain += f"        (and)\n"
+                    domain += f"      )\n"
+                
+                domain += f"      (not ({gw_id}))\n"
+                domain += f"    )\n"
+                domain += f"  )\n\n"
+
+        # Inclusive converging gateway actions
+        for e in self.elements:
+            if "Inclusive Gateway" in e.type and len(incoming.get(e.id, [])) > 1:
+                gw_id = sanitize_name(e.id)
+                nexts = outgoing.get(e.id, [])
+                if len(nexts) == 1:
+                    next_id = sanitize_name(nexts[0])
+
+                    # 🟢 Get diverging ID for this converging gateway
+                    diverge_id = converge_to_diverge.get(e.id, e.id)
+                    diverge_gw_id = sanitize_name(diverge_id)
+
+                    # 🟢 Build preconditions
+                    branch_conds = ' '.join(
+                        f"(not (branch_started_{sanitize_name(f'{diverge_id}_{src_id}')}))"
+                        for src_id in incoming[e.id]
+                    )
+
+                    domain += f"  (:action inclusive_converge_{gw_id}\n"
+                    domain += f"    :precondition (and ({gw_id}) (at_least_one_branch_{diverge_gw_id}) {branch_conds})\n"
+                    domain += f"    :effect (and ({next_id}) (not ({gw_id})))\n"
+                    domain += f"  )\n\n"
+
         def get_immediate_preconditions(element_id, override_src=None):
             preconditions = set()
             sources = [override_src] if override_src else incoming.get(element_id, [])
+
             for src_id in sources:
                 src_elem = elements_by_id.get(src_id)
-                if src_elem:
-                    if src_elem.type == "Exclusive Gateway":
-                        # Controlled by gateway, wait for the element to activate
-                        preconditions.add(f"({sanitize_name(element_id)})")
-                    elif "Event" in src_elem.type or "Gateway" in src_elem.type:
-                        # Precondition is the source (event fired or gateway unblocked)
-                        preconditions.add(f"({sanitize_name(src_id)})")
-                    else:
-                        # Coming from a task: this element must be ready, not the source
-                        preconditions.add(f"({sanitize_name(element_id)})")
+                if not src_elem:
+                    continue
+
+                src_name = sanitize_name(src_id)
+                elem_name = sanitize_name(element_id)
+
+                if src_elem.type == "Exclusive Gateway":
+                    # Controlled by exclusive gateway, wait for the element itself
+                    preconditions.add(f"({elem_name})")
+
+                elif "Inclusive Gateway" in src_elem.type and len(outgoing.get(src_id, [])) > 1:
+                    # Inclusive gateway with multiple branches, add branch_started predicate for this task
+                    branch_pred = f"branch_started_{sanitize_name(src_id + '_' + element_id)}"
+                    preconditions.add(f"({branch_pred})")
+
+                    # Also require the task itself to be ready
+                    preconditions.add(f"({elem_name})")
+
+                elif "Event" in src_elem.type or "Gateway" in src_elem.type:
+                    # Source event or gateway predicate
+                    preconditions.add(f"({src_name})")
+
+                else:
+                    # Source is a task: wait for the task itself
+                    preconditions.add(f"({elem_name})")
+
+            # If no preconditions found, use the single start event if exists
             if not preconditions and len(start_events) == 1:
                 preconditions.add(f"({sanitize_name(start_events[0].id)})")
+
             return preconditions
         
         # Identify converging gateways
@@ -367,7 +477,7 @@ class BPMNParser:
             if "Start Event" in e.type or "End Event" in e.type or "Sequence Flow" in e.type:
                 continue
 
-            if "Gateway" in e.type:
+            if "Gateway" in e.type and "Inclusive Gateway" not in e.type:
                 targets = outgoing.get(e.id, [])
                 precondition = f"({sanitize_name(e.id)})"
                 if "Exclusive Gateway" in e.type:
@@ -464,6 +574,13 @@ class BPMNParser:
 
                 oneof_effects = sorted(oneof_effects_set)
 
+                # Detect inclusive gateway sources
+                inclusive_branch_sources = []
+                for src_id in incoming_ids:
+                    src_elem = elements_by_id.get(src_id)
+                    if src_elem and "Inclusive Gateway" in src_elem.type and len(outgoing.get(src_elem.id, [])) > 1:
+                        inclusive_branch_sources.append(src_elem.id)
+
                 if len(merged_sources) > 1:
                     for src_id in incoming_ids:
                         src_elem = elements_by_id.get(src_id)
@@ -487,13 +604,18 @@ class BPMNParser:
 
                         preconditions = get_preconds_for_source(e.id, src_id)
 
+                        # Add branch_started for inclusive branches
+                        if src_elem and "Inclusive Gateway" in src_elem.type and len(outgoing.get(src_elem.id, [])) > 1:
+                            branch_pred = f"branch_started_{sanitize_name(src_elem.id + '_' + e.id)}"
+                            preconditions.add(f"({branch_pred})")
+
                         domain += f"  (:action {action_name}\n"
                         domain += f"    :precondition (and {' '.join(sorted(preconditions))})\n"
                         domain += f"    :effect (and"
                         if effects:
                             domain += f" {' '.join(sorted(set(effects)))}"
                         if oneof_effects:
-                            unique_effects = list(dict.fromkeys(oneof_effects))  # preserve order, remove duplicates
+                            unique_effects = list(dict.fromkeys(oneof_effects))
                             if len(unique_effects) == 1:
                                 domain += f" {unique_effects[0]}"
                             else:
@@ -524,7 +646,7 @@ class BPMNParser:
                     if effects:
                         domain += f" {' '.join(sorted(set(effects)))}"
                     if oneof_effects:
-                        unique_effects = list(dict.fromkeys(oneof_effects))  # remove dupes
+                        unique_effects = list(dict.fromkeys(oneof_effects))
                         if len(unique_effects) == 1:
                             domain += f" {unique_effects[0]}"
                         else:
@@ -606,7 +728,7 @@ class BPMNParser:
                 f.write(problem_content)
 
 if __name__ == '__main__':
-    file_path = 'bpmn_diagrams/place_order.bpmn'
+    file_path = 'bpmn_diagrams/recourse.bpmn'
     domain_name = "place_order_no_flatten"
     parser = BPMNParser(file_path)
     parser.parse()

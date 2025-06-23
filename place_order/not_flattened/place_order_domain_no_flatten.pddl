@@ -30,7 +30,7 @@
   )
 
   (:action parallel_Gateway_04hl5tz
-    :precondition (and (Gateway_04hl5tz) (not (Activity_1wqi2kf)) (not (Activity_1x6npxm)))
+    :precondition (and (Gateway_04hl5tz) (not (Activity_1x6npxm)) (not (Activity_1wqi2kf)))
     :effect (and (Activity_1vopca8) (not (Gateway_04hl5tz)))
   )
 
