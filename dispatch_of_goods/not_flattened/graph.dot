@@ -1,0 +1,17 @@
+digraph {
+  0 [label="---", shape=doublecircle];
+  1 [label="goal_shipment_prepared"];
+  2 [label="prepare_for_picking_up_goods"];
+  3 [label="exclusive_exclusivegateway_0z5sib0"];
+  4 [label="package_goods"];
+  5 [label="parallel_parallelgateway_02fgrfq"];
+  6 [label="activate_parallelgateway_02fgrfq"];
+  7 [label="start_ship_goods", shape=box];
+  1 -> 0;
+  2 -> 1;
+  3 -> 2;
+  4 -> 3;
+  5 -> 4;
+  6 -> 5;
+  7 -> 6;
+}

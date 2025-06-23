@@ -675,13 +675,21 @@ class BPMNParser:
         not_flattened_folder = os.path.join(output_folder, "not_flattened")
         os.makedirs(not_flattened_folder, exist_ok=True)
 
-        # Step 1: Separate into types, and prevent overlap
-        gateways = set(p for p in predicates if "Gateway" in p)
-        events = set(p for p in predicates if "Event" in p)
-        tasks = set(p for p in predicates if "Activity" in p or "Task" in p)
+        # Deduplicate predicates
+        predicates = set(predicates)
 
-        # Remove duplicates across types — priority: gateway > event
-        events -= gateways  # remove gateway objects from event type
+        # Remove branch_started_* and at_least_one_branch_* from task/gateway/event classification
+        marker_preds = {p for p in predicates if p.startswith("branch_started_") or p.startswith("at_least_one_branch_")}
+        non_marker_preds = predicates - marker_preds
+
+        # Classify non-marker preds
+        gateways = {p for p in non_marker_preds if "Gateway" in p}
+        events = {p for p in non_marker_preds if "Event" in p}
+        tasks = {p for p in non_marker_preds if "Activity" in p or "Task" in p}
+
+        # Remove overlap: gateway > event > task
+        events -= gateways
+        tasks -= (gateways | events)
 
         # Step 2: Build object section
         object_section = ""
@@ -728,7 +736,7 @@ class BPMNParser:
                 f.write(problem_content)
 
 if __name__ == '__main__':
-    file_path = 'bpmn_diagrams/recourse.bpmn'
+    file_path = 'bpmn_diagrams/dispatch_of_goods.bpmn'
     domain_name = "place_order_no_flatten"
     parser = BPMNParser(file_path)
     parser.parse()

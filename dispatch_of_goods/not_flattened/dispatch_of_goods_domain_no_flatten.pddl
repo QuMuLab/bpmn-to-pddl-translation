@@ -13,10 +13,10 @@
     (Task_05ftug5)
     (Task_0sl26uo)
     (ExclusiveGateway_1mpgzhg)
+    (InclusiveGateway_0p2e5vq)
     (ExclusiveGateway_1ouv9kf)
     (ExclusiveGateway_0z5sib0)
     (ParallelGateway_02fgrfq)
-    (InclusiveGateway_0p2e5vq)
     (InclusiveGateway_1dgb4sg)
     (at_least_one_branch_InclusiveGateway_0p2e5vq)
     (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib)
@@ -25,8 +25,8 @@
     (started)
   )
 
-  (:action start_StartEvent_1
-    :precondition (and (not (started)) (not (StartEvent_1)))
+  (:action start_Ship_goods
+    :precondition (and (not (started))(not (StartEvent_1)))
     :effect (and (StartEvent_1) (started))
   )
 
