@@ -51,7 +51,7 @@
   )
 
   (:action inclusive_converge_InclusiveGateway_1dgb4sg
-    :precondition (and (InclusiveGateway_1dgb4sg) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba)) (not (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib)))
+    :precondition (and (InclusiveGateway_1dgb4sg) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib)) (not (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba)))
     :effect (and (ExclusiveGateway_1ouv9kf) (not (InclusiveGateway_1dgb4sg)))
   )
 
@@ -100,14 +100,14 @@
     :effect (and (ExclusiveGateway_0z5sib0) (not (ExclusiveGateway_1ouv9kf)))
   )
 
-  (:action exclusive_ExclusiveGateway_0z5sib0
-    :precondition (and (ExclusiveGateway_0z5sib0))
-    :effect (and (Task_0sl26uo) (not (ExclusiveGateway_0z5sib0)))
-  )
-
   (:action parallel_ParallelGateway_02fgrfq
     :precondition (and (ParallelGateway_02fgrfq))
     :effect (and (Task_0vaxgaa) (Task_05ftug5) (not (ParallelGateway_02fgrfq)))
+  )
+
+  (:action parallel_test
+    :precondition (and (ExclusiveGateway_0z5sib0))
+    :effect (and (Task_0sl26uo) (not (ExclusiveGateway_0z5sib0)))
   )
 
   (:action goal_Shipment_prepared
