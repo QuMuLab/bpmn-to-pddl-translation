@@ -86,7 +86,7 @@
     <bpmn:endEvent id="EndEvent_1fx9yp3" name="Shipment&#10;prepared">
       <bpmn:incoming>SequenceFlow_0v64x8b</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:parallelGateway id="ExclusiveGateway_0z5sib0" name="test">
+    <bpmn:parallelGateway id="ExclusiveGateway_0z5sib0">
       <bpmn:incoming>SequenceFlow_035vf60</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_0b2nw5c</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_06kfaev</bpmn:outgoing>

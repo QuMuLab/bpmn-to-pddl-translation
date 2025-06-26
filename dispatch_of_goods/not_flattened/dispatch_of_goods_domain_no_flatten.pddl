@@ -32,21 +32,20 @@
 
   (:action activate_ParallelGateway_02fgrfq
     :precondition (and (StartEvent_1))
-    :effect (and (ParallelGateway_02fgrfq))
+    :effect (and (ParallelGateway_02fgrfq) (not(StartEvent_1)))
   )
 
   (:action inclusive_diverge_InclusiveGateway_0p2e5vq
     :precondition (and (InclusiveGateway_0p2e5vq))
     :effect (and
       (oneof
-        (and (Task_12j0pib) (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib) (at_least_one_branch_InclusiveGateway_0p2e5vq))
+        (and (Task_12j0pib) (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (InclusiveGateway_0p2e5vq)))
         (and)
       )
       (oneof
-        (and (Task_0jsoxba) (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba) (at_least_one_branch_InclusiveGateway_0p2e5vq))
+        (and (Task_0jsoxba) (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (InclusiveGateway_0p2e5vq)))
         (and)
       )
-      (not (InclusiveGateway_0p2e5vq))
     )
   )
 
@@ -80,11 +79,6 @@
     :effect (and (ExclusiveGateway_1ouv9kf) (not (Task_0s79ile)))
   )
 
-  (:action Package_goods
-    :precondition (and (Task_05ftug5))
-    :effect (and (ExclusiveGateway_0z5sib0) (not (Task_05ftug5)))
-  )
-
   (:action Prepare_for_picking_up_goods
     :precondition (and (Task_0sl26uo))
     :effect (and (EndEvent_1fx9yp3) (not (Task_0sl26uo)))
@@ -105,7 +99,7 @@
     :effect (and (Task_0vaxgaa) (Task_05ftug5) (not (ParallelGateway_02fgrfq)))
   )
 
-  (:action parallel_test
+  (:action parallel_ExclusiveGateway_0z5sib0
     :precondition (and (ExclusiveGateway_0z5sib0))
     :effect (and (Task_0sl26uo) (not (ExclusiveGateway_0z5sib0)))
   )

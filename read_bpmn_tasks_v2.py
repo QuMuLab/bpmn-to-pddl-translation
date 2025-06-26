@@ -260,7 +260,7 @@ class BPMNParser:
                         action_name = f"activate_{gateway_id}"
                         domain += f"  (:action {action_name}\n"
                         domain += f"    :precondition (and ({start_id}))\n"
-                        domain += f"    :effect (and ({gateway_id}))\n"
+                        domain += f"    :effect (and ({gateway_id}) (not({start_id})))\n"
                         domain += "  )\n\n"
 
         def map_converging_to_diverging():
@@ -301,11 +301,10 @@ class BPMNParser:
                     tgt_id = sanitize_name(tgt)
                     branch_id = sanitize_name(f"{e.id}_{tgt}")
                     domain += f"      (oneof\n"
-                    domain += f"        (and ({tgt_id}) (branch_started_{branch_id}) (at_least_one_branch_{gw_id}))\n"
+                    domain += f"        (and ({tgt_id}) (branch_started_{branch_id}) (at_least_one_branch_{gw_id}) (not ({gw_id})))\n"
                     domain += f"        (and)\n"
                     domain += f"      )\n"
                 
-                domain += f"      (not ({gw_id}))\n"
                 domain += f"    )\n"
                 domain += f"  )\n\n"
 
