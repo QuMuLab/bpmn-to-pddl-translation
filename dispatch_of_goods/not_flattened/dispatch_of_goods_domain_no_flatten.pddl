@@ -18,11 +18,18 @@
     (ExclusiveGateway_0z5sib0)
     (ParallelGateway_02fgrfq)
     (InclusiveGateway_1dgb4sg)
+    (inclusive_counter_InclusiveGateway_0p2e5vq_0)
+    (inclusive_counter_InclusiveGateway_0p2e5vq_1)
+    (inclusive_counter_InclusiveGateway_0p2e5vq_2)
+    (increase_InclusiveGateway_0p2e5vq)
+    (decrease_InclusiveGateway_0p2e5vq)
     (at_least_one_branch_InclusiveGateway_0p2e5vq)
     (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib)
     (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba)
     (done)
     (started)
+    (test1)
+    (test2)
   )
 
   (:action start_Ship_goods
@@ -35,33 +42,51 @@
     :effect (and (ParallelGateway_02fgrfq) (not(StartEvent_1)))
   )
 
+  (:action inclusive_increase_InclusiveGateway_0p2e5vq
+    :precondition (and (increase_InclusiveGateway_0p2e5vq))
+    :effect (and
+      (not (increase_InclusiveGateway_0p2e5vq))
+      (when (inclusive_counter_InclusiveGateway_0p2e5vq_1) (and (not (inclusive_counter_InclusiveGateway_0p2e5vq_1)) (inclusive_counter_InclusiveGateway_0p2e5vq_2)))
+      (when (inclusive_counter_InclusiveGateway_0p2e5vq_0) (and (not (inclusive_counter_InclusiveGateway_0p2e5vq_0)) (inclusive_counter_InclusiveGateway_0p2e5vq_1)))
+    )
+  )
+
+  (:action inclusive_decrease_InclusiveGateway_0p2e5vq
+    :precondition (and (decrease_InclusiveGateway_0p2e5vq))
+    :effect (and
+      (not (decrease_InclusiveGateway_0p2e5vq))
+      (when (inclusive_counter_InclusiveGateway_0p2e5vq_1) (and (not (inclusive_counter_InclusiveGateway_0p2e5vq_1)) (inclusive_counter_InclusiveGateway_0p2e5vq_0)))
+      (when (inclusive_counter_InclusiveGateway_0p2e5vq_2) (and (not (inclusive_counter_InclusiveGateway_0p2e5vq_2)) (inclusive_counter_InclusiveGateway_0p2e5vq_1)))
+    )
+  )
+
   (:action inclusive_diverge_InclusiveGateway_0p2e5vq
     :precondition (and (InclusiveGateway_0p2e5vq))
     :effect (and
       (oneof
-        (and (Task_12j0pib) (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (InclusiveGateway_0p2e5vq)))
+        (and (Task_12j0pib) (increase_InclusiveGateway_0p2e5vq) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (InclusiveGateway_0p2e5vq)))
         (and)
       )
       (oneof
-        (and (Task_0jsoxba) (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (InclusiveGateway_0p2e5vq)))
+        (and (Task_0jsoxba) (increase_InclusiveGateway_0p2e5vq) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (InclusiveGateway_0p2e5vq)))
         (and)
       )
     )
   )
 
   (:action inclusive_converge_InclusiveGateway_1dgb4sg
-    :precondition (and (InclusiveGateway_1dgb4sg) (at_least_one_branch_InclusiveGateway_0p2e5vq) (not (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib)) (not (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba)))
-    :effect (and (ExclusiveGateway_1ouv9kf) (not (InclusiveGateway_1dgb4sg)))
+    :precondition (and (InclusiveGateway_1dgb4sg) (at_least_one_branch_InclusiveGateway_0p2e5vq) (inclusive_counter_InclusiveGateway_0p2e5vq_0))
+    :effect (and (ExclusiveGateway_1ouv9kf) (not (InclusiveGateway_1dgb4sg)) (not (at_least_one_branch_InclusiveGateway_0p2e5vq)))
   )
 
   (:action Insure_parcel
-    :precondition (and (Task_12j0pib) (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib))
-    :effect (and (InclusiveGateway_1dgb4sg) (not (Task_12j0pib)) (not (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib)))
+    :precondition (and (Task_12j0pib) (not (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib)) (not (inclusive_counter_InclusiveGateway_0p2e5vq_0)))
+    :effect (and (InclusiveGateway_1dgb4sg) (not (Task_12j0pib)) (branch_started_InclusiveGateway_0p2e5vq_Task_12j0pib) (decrease_InclusiveGateway_0p2e5vq))
   )
 
   (:action Write_package_label
-    :precondition (and (Task_0jsoxba) (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba))
-    :effect (and (InclusiveGateway_1dgb4sg) (not (Task_0jsoxba)) (not (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba)))
+    :precondition (and (Task_0jsoxba) (not (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba)) (not (inclusive_counter_InclusiveGateway_0p2e5vq_0)))
+    :effect (and (InclusiveGateway_1dgb4sg) (not (Task_0jsoxba)) (branch_started_InclusiveGateway_0p2e5vq_Task_0jsoxba) (decrease_InclusiveGateway_0p2e5vq))
   )
 
   (:action Clarify_shipment_method
@@ -79,6 +104,11 @@
     :effect (and (ExclusiveGateway_1ouv9kf) (not (Task_0s79ile)))
   )
 
+  (:action Package_goods
+    :precondition (and (Task_05ftug5))
+    :effect (and (ExclusiveGateway_0z5sib0) (test1) (not (Task_05ftug5)))
+  )
+
   (:action Prepare_for_picking_up_goods
     :precondition (and (Task_0sl26uo))
     :effect (and (EndEvent_1fx9yp3) (not (Task_0sl26uo)))
@@ -91,7 +121,7 @@
 
   (:action exclusive_ExclusiveGateway_1ouv9kf
     :precondition (and (ExclusiveGateway_1ouv9kf))
-    :effect (and (ExclusiveGateway_0z5sib0) (not (ExclusiveGateway_1ouv9kf)))
+    :effect (and (ExclusiveGateway_0z5sib0) (test2) (not (ExclusiveGateway_1ouv9kf)))
   )
 
   (:action parallel_ParallelGateway_02fgrfq
@@ -100,7 +130,7 @@
   )
 
   (:action parallel_ExclusiveGateway_0z5sib0
-    :precondition (and (ExclusiveGateway_0z5sib0))
+    :precondition (and (ExclusiveGateway_0z5sib0) (test1) (test2))
     :effect (and (Task_0sl26uo) (not (ExclusiveGateway_0z5sib0)))
   )
 

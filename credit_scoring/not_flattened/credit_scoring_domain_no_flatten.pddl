@@ -41,7 +41,7 @@
 
   (:action report_delay
     :precondition (and (IntermediateCatchEvent_0ujob24))
-    :effect (and (and (ExclusiveGateway_11dldcm) (IntermediateCatchEvent_0yg7cuh)) (not (IntermediateCatchEvent_0ujob24)))
+    :effect (and (and (IntermediateCatchEvent_0yg7cuh) (ExclusiveGateway_11dldcm)) (not (IntermediateCatchEvent_0ujob24)))
   )
 
   (:action send_credit_score_from_ExclusiveGateway_0rtdod4
