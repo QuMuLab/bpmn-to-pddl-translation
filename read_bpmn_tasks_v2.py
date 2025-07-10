@@ -892,6 +892,9 @@ class BPMNParser:
         # Deduplicate predicates
         predicates = set(predicates)
 
+        # Track inclusive_counter_*_0 predicates
+        initial_counters = sorted(p for p in predicates if p.startswith("inclusive_counter_") and p.endswith("_0"))
+
         # Remove branch_started_* and at_least_one_branch_* from task/gateway/event classification
         marker_preds = {p for p in predicates if p.startswith("branch_started_") or p.startswith("at_least_one_branch_")}
         non_marker_preds = predicates - marker_preds
@@ -922,12 +925,13 @@ class BPMNParser:
         p0_content = f"""(define (problem p0-bpmn-no-flatten)
         (:domain {domain_name})
         (:objects
-    {object_section.strip()}
+{object_section.strip()}
         )
-        (:init)
+        (:init {' '.join(f'({c})' for c in initial_counters)})
         (:goal {goal_state})
         )
-    """
+"""
+
         with open(empty_init_path, 'w') as f:
             f.write(p0_content)
 
@@ -936,21 +940,21 @@ class BPMNParser:
             problem_name = f"p0{count}"
             file_path = os.path.join(not_flattened_folder, f"{problem_name}.pddl")
 
-            init_state = [f"({start_event})"]
+            init_state = [f"({start_event})"] + [f"({c})" for c in initial_counters]
             problem_content = f"""(define (problem {problem_name}-bpmn-no-flatten)
-        (:domain {domain_name})
-        (:objects
-    {object_section.strip()}
-        )
-        (:init {' '.join(init_state)})
-        (:goal {goal_state})
-        )
-    """
+                    (:domain {domain_name})
+                    (:objects
+            {object_section.strip()}
+                    )
+                    (:init {' '.join(init_state)})
+                    (:goal {goal_state})
+                    )
+            """
             with open(file_path, 'w') as f:
                 f.write(problem_content)
 
 if __name__ == '__main__':
-    file_path = 'bpmn_diagrams/credit_scoring.bpmn'
+    file_path = 'bpmn_diagrams/dispatch_of_goods.bpmn'
     domain_name = "place_order_no_flatten"
     parser = BPMNParser(file_path)
     parser.parse()
