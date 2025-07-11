@@ -48,11 +48,6 @@
       <bpmn:outgoing>Flow_1bolkhu</bpmn:outgoing>
     </bpmn:task>
     <bpmn:sequenceFlow id="Flow_1fxp0b4" sourceRef="Gateway_1la9igl" targetRef="Activity_1x6npxm" />
-    <bpmn:exclusiveGateway id="Gateway_04hl5tz">
-      <bpmn:incoming>Flow_1bolkhu</bpmn:incoming>
-      <bpmn:incoming>Flow_010vbev</bpmn:incoming>
-      <bpmn:outgoing>Flow_0hp3k2d</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1bolkhu" sourceRef="Activity_1x6npxm" targetRef="Gateway_04hl5tz" />
     <bpmn:sequenceFlow id="Flow_010vbev" sourceRef="Activity_1wqi2kf" targetRef="Gateway_04hl5tz" />
     <bpmn:task id="Activity_1vopca8" name="Ship Order">
@@ -64,6 +59,11 @@
       <bpmn:incoming>Flow_1lvmmaf</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1lvmmaf" sourceRef="Activity_1vopca8" targetRef="Event_12xfkhi" />
+    <bpmn:parallelGateway id="Gateway_04hl5tz">
+      <bpmn:incoming>Flow_1bolkhu</bpmn:incoming>
+      <bpmn:incoming>Flow_010vbev</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hp3k2d</bpmn:outgoing>
+    </bpmn:parallelGateway>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0cdnjsm">
@@ -105,9 +105,6 @@
         <dc:Bounds x="790" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_04hl5tz_di" bpmnElement="Gateway_04hl5tz" isMarkerVisible="true">
-        <dc:Bounds x="895" y="155" width="50" height="50" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1vopca8_di" bpmnElement="Activity_1vopca8">
         <dc:Bounds x="990" y="140" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -117,6 +114,9 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1108" y="205" width="84" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0k62chr_di" bpmnElement="Gateway_04hl5tz">
+        <dc:Bounds x="895" y="155" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_140zasb_di" bpmnElement="Flow_140zasb">
         <di:waypoint x="218" y="180" />

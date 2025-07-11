@@ -199,6 +199,15 @@ class BPMNParser:
         def sanitize_name(name):
             return re.sub(r'[^a-zA-Z0-9_]', '_', name)
 
+        parallel_converging_gateways = {}
+
+        for elem_id, elem in elements_by_id.items():
+            if (
+                "Parallel Gateway" in elem.type
+                and len(incoming.get(elem_id, [])) > 1
+            ):
+                parallel_converging_gateways[elem_id] = [0,len(incoming.get(elem_id, []))]
+
         domain = f"(define (domain {domain_name})\n"
         domain += "  (:requirements :strips :typing)\n"
         domain += "  (:types task event gateway)\n\n"
@@ -246,6 +255,13 @@ class BPMNParser:
                         domain += f"    ({branch_pred})\n"
                         predicates.add(branch_pred)
 
+        for gw_id in parallel_converging_gateways.keys():
+            incoming_count = parallel_converging_gateways[gw_id][1]
+            for i in range(incoming_count):
+                pred = f"({sanitize_name(gw_id)}_precondition_{i})"
+                domain += f"    {pred}\n"
+                predicates.add(pred[1:-1])
+
         domain += "    (done)\n"
         domain += "    (started)\n"
         domain += "  )\n\n"
@@ -279,6 +295,21 @@ class BPMNParser:
                         domain += f"    :precondition (and ({start_id}))\n"
                         domain += f"    :effect (and ({gateway_id}) (not({start_id})))\n"
                         domain += "  )\n\n"
+        
+        def get_parallel_gateway_precondition_if_needed(element_id, outgoing, parallel_converging_gateways):
+            # Look at *all* outgoing edges from this element
+            for target_id in outgoing.get(element_id, []):
+                if target_id in parallel_converging_gateways:
+                    counter, incoming_count = parallel_converging_gateways[target_id]
+                    if counter >= incoming_count:
+                        # Safety: don't exceed available counters
+                        return ""
+                    pred = f" ({sanitize_name(target_id)}_precondition_{counter})"
+                    parallel_converging_gateways[target_id][0] += 1
+                    return pred
+            # If none of the outgoing edges go to a converging parallel gateway
+            return ""
+
 
         def map_inclusive_gateway_pairs(elements, incoming, outgoing, start_events, sanitize_name):
             elements_by_id = {e.id: e for e in elements}
@@ -322,24 +353,6 @@ class BPMNParser:
                             queue.append(tgt)
 
             return result
-        
-        def generate_inclusive_increase_effects(gateway_id, n):
-            lines = []
-            for i in range(n):
-                lines.append(
-                    f"(when (inclusive_counter_{gateway_id}_{i}) "
-                    f"(and (not (inclusive_counter_{gateway_id}_{i})) (inclusive_counter_{gateway_id}_{i+1})))"
-                )
-            return lines
-        
-        def generate_inclusive_decrease_effects(gateway_id, n):
-            lines = []
-            for i in range(1, n+1):
-                lines.append(
-                    f"(when (inclusive_counter_{gateway_id}_{i}) "
-                    f"(and (not (inclusive_counter_{gateway_id}_{i})) (inclusive_counter_{gateway_id}_{i-1})))"
-                )
-            return lines
         
         def generate_inclusive_counter_actions(gateway_id, n):
             inc_pred = f"increase_{gateway_id}"
@@ -418,9 +431,10 @@ class BPMNParser:
                     # 1. The converging gateway itself active
                     # 2. At least one branch fired
                     # 3. The counter is 0
+                    pred = get_parallel_gateway_precondition_if_needed(e.id,outgoing, parallel_converging_gateways)
                     domain += f"  (:action inclusive_converge_{gw_id}\n"
                     domain += f"    :precondition (and ({gw_id}) (at_least_one_branch_{diverge_gw_id}) (inclusive_counter_{diverge_gw_id}_0))\n"
-                    domain += f"    :effect (and ({next_id}) (not ({gw_id})) (not (at_least_one_branch_{diverge_gw_id})))\n"
+                    domain += f"    :effect (and ({next_id}) (not ({gw_id})) (not (at_least_one_branch_{diverge_gw_id})){pred})\n"
                     domain += f"  )\n\n"
 
         def get_immediate_preconditions(element_id, override_src=None):
@@ -491,74 +505,6 @@ class BPMNParser:
                 else:
                     effects.append(f"(and {' '.join(branch_effects)})")
             return effects
-        
-        # Handle Parallel Gateways
-        for e in self.elements:
-            if e.id in merged_tasks or e.id in skipped_gateways:
-                continue
-            if "Parallel Gateway" not in e.type:
-                continue
-
-            targets = outgoing.get(e.id, [])
-            if len(targets) <= 1:
-                continue  # Not a diverging parallel gateway
-
-            paths = []
-            converging_candidate = None
-
-            for t in targets:
-                path = []
-                curr = t
-                while True:
-                    path.append(curr)
-                    nexts = outgoing.get(curr, [])
-
-                    # If this node is a converging gateway, stop here
-                    if is_converging_gateway(curr):
-                        converging_candidate = curr
-                        break
-                    if not nexts or len(nexts) > 1:
-                        converging_candidate = None
-                        break
-                    curr = nexts[0]
-
-                if not converging_candidate:
-                    break
-                paths.append(path)
-
-            if not converging_candidate or len(paths) != len(targets):
-                continue  # Not all paths converged properly
-
-            post_converging = outgoing.get(converging_candidate, [])
-            if len(post_converging) != 1:
-                continue  # Not a clean single exit after convergence
-
-            after_converging = post_converging[0]
-            skipped_gateways.update({e.id, converging_candidate})
-
-            # Collect intermediate tasks
-            intermediate_tasks = set()
-            for path in paths:
-                for node_id in path[:-1]:  # Exclude the converging gateway itself
-                    if "Task" in elements_by_id[node_id].type:
-                        intermediate_tasks.add(node_id)
-
-            # Diverging action
-            diverge_name = sanitize_name(elements_by_id[e.id].name or e.id)
-            domain += f"  (:action parallel_{diverge_name}\n"
-            domain += f"    :precondition (and ({sanitize_name(e.id)}))\n"
-            effects = [f"({sanitize_name(tgt)})" for tgt in targets]
-            effects.append(f"({sanitize_name(converging_candidate)})")
-            domain += f"    :effect (and {' '.join(effects)} (not ({sanitize_name(e.id)})))\n"
-            domain += "  )\n\n"
-
-            # Converging action
-            converge_name = sanitize_name(elements_by_id[converging_candidate].name or converging_candidate)
-            domain += f"  (:action parallel_{converge_name}\n"
-            preconds = [f"({sanitize_name(converging_candidate)})"] + [f"(not ({sanitize_name(t)}))" for t in intermediate_tasks]
-            domain += f"    :precondition (and {' '.join(preconds)})\n"
-            domain += f"    :effect (and ({sanitize_name(after_converging)}) (not ({sanitize_name(converging_candidate)})))\n"
-            domain += "  )\n\n"
 
         generated = set()
         for e in self.elements:
@@ -583,11 +529,26 @@ class BPMNParser:
 
                 if "Parallel Gateway" in e.type:
                     # Parallel gateway — activate all downstream tasks
+                    pred = get_parallel_gateway_precondition_if_needed(e.id, outgoing, parallel_converging_gateways)
+
+                    # Build preconditions for converging gateways
+                    preconds = [f"({sanitize_name(e.id)})"]
+                    if e.id in parallel_converging_gateways:
+                        incoming_count = parallel_converging_gateways[e.id][1]
+                        for i in range(incoming_count):
+                            preconds.append(f"({sanitize_name(e.id)}_precondition_{i})")
+                    else:
+                        # Default precondition if not a converging gateway
+                        preconds = [f"({sanitize_name(e.id)})"]
+
+                    # Build effects
                     effects = [f"({sanitize_name(tgt)})" for tgt in targets]
+
                     domain += f"  (:action {action_name}\n"
-                    domain += f"    :precondition (and {precondition})\n"
-                    domain += f"    :effect (and {' '.join(effects)} (not {precondition}))\n"
+                    domain += f"    :precondition (and {' '.join(preconds)})\n"
+                    domain += f"    :effect (and {' '.join(effects)} (not ({sanitize_name(e.id)})){pred})\n"
                     domain += "  )\n\n"
+
                     generated.add(e.id)
                     continue
 
@@ -609,7 +570,7 @@ class BPMNParser:
                             oneof_effects.append(effect_predicates[0])
                         else:
                             oneof_effects.append(f"(and {' '.join(effect_predicates)})")
-
+                    pred = get_parallel_gateway_precondition_if_needed(e.id,outgoing, parallel_converging_gateways)
                     domain += f"  (:action {action_name}\n"
                     domain += f"    :precondition (and {precondition})\n"
                     domain += f"    :effect (and"
@@ -619,7 +580,7 @@ class BPMNParser:
                     elif len(oneof_effects) == 1:
                         domain += f" {oneof_effects[0]}"
 
-                    domain += f" (not {precondition}))\n"
+                    domain += f" (not {precondition}){pred})\n"
                     domain += "  )\n\n"
                     generated.add(e.id)
                     continue
@@ -630,13 +591,13 @@ class BPMNParser:
                         effect = f"({sanitize_name(targets[0])})"
                         domain += f"  (:action {action_name}\n"
                         domain += f"    :precondition (and {precondition})\n"
-                        domain += f"    :effect (and {effect} (not {precondition}))\n"
+                        domain += f"    :effect (and {effect} (not {precondition}){pred})\n"
                         domain += "  )\n\n"
                     elif len(targets) > 1:
                         effects = [f"({sanitize_name(tgt)})" for tgt in targets]
                         domain += f"  (:action {action_name}\n"
                         domain += f"    :precondition (and {precondition})\n"
-                        domain += f"    :effect (and {' '.join(effects)} (not {precondition}))\n"
+                        domain += f"    :effect (and {' '.join(effects)} (not {precondition}){pred})\n"
                         domain += "  )\n\n"
                     generated.add(e.id)
                     continue
@@ -700,6 +661,8 @@ class BPMNParser:
                             branch_marker = f"branch_started_{sanitize_name(src_elem.id + '_' + e.id)}"
                             branch_markers.add(branch_marker)
 
+                        pred = get_parallel_gateway_precondition_if_needed(e.id,outgoing, parallel_converging_gateways)
+
                         # Start writing the action
                         domain += f"  (:action {action_name}\n"
                         domain += f"    :precondition (and {' '.join(sorted(standard_preconditions))}"
@@ -715,15 +678,15 @@ class BPMNParser:
 
                         # Add normal effects
                         if effects:
-                            domain += f" {' '.join(sorted(set(effects)))}"
+                            domain += f" {' '.join(sorted(set(effects)))}{pred}"
 
                         # Handle oneof effects
                         if oneof_effects:
                             unique_effects = list(dict.fromkeys(oneof_effects))
                             if len(unique_effects) == 1:
-                                domain += f" {unique_effects[0]}"
+                                domain += f" {unique_effects[0]}{pred}"
                             else:
-                                domain += f" (oneof {' '.join(unique_effects)})"
+                                domain += f" (oneof {' '.join(unique_effects)}{pred})"
 
                         # Remove standard preconditions
                         for pre in sorted(standard_preconditions):
@@ -757,6 +720,7 @@ class BPMNParser:
                     # Start with only the task itself as precondition
                     branch_preconditions = set()
                     branch_effects = set()
+                    pred = get_parallel_gateway_precondition_if_needed(e.id,outgoing, parallel_converging_gateways)
 
                     if has_control_gateway:
                         # After Exclusive/Parallel gateway: only the task itself as precondition
@@ -824,13 +788,13 @@ class BPMNParser:
 
                     # Add normal effects
                     if effects:
-                        domain += f" {' '.join(sorted(set(effects)))}"
+                        domain += f" {' '.join(sorted(set(effects)))}{pred}"
                     if oneof_effects:
                         unique_effects = list(dict.fromkeys(oneof_effects))
                         if len(unique_effects) == 1:
-                            domain += f" {unique_effects[0]}"
+                            domain += f" {unique_effects[0]}{pred}"
                         else:
-                            domain += f" (oneof {' '.join(unique_effects)})"
+                            domain += f" (oneof {' '.join(unique_effects)}{pred})"
 
                     # ---------------------------------
                     # Add *REMOVE* precondition for tasks + branch markers + increase counter if immediately after diverging inclusive gateway
@@ -954,7 +918,7 @@ class BPMNParser:
                 f.write(problem_content)
 
 if __name__ == '__main__':
-    file_path = 'bpmn_diagrams/dispatch_of_goods.bpmn'
+    file_path = 'bpmn_diagrams/place_order.bpmn'
     domain_name = "place_order_no_flatten"
     parser = BPMNParser(file_path)
     parser.parse()

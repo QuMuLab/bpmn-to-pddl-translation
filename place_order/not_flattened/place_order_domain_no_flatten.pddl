@@ -15,6 +15,8 @@
     (Gateway_1yg27bh)
     (Gateway_1la9igl)
     (Gateway_04hl5tz)
+    (Gateway_04hl5tz_precondition_0)
+    (Gateway_04hl5tz_precondition_1)
     (done)
     (started)
   )
@@ -22,16 +24,6 @@
   (:action start_Order_Received
     :precondition (and (not (started))(not (StartEvent_1)))
     :effect (and (StartEvent_1) (started))
-  )
-
-  (:action parallel_Gateway_1la9igl
-    :precondition (and (Gateway_1la9igl))
-    :effect (and (Activity_1wqi2kf) (Activity_1x6npxm) (Gateway_04hl5tz) (not (Gateway_1la9igl)))
-  )
-
-  (:action parallel_Gateway_04hl5tz
-    :precondition (and (Gateway_04hl5tz) (not (Activity_1x6npxm)) (not (Activity_1wqi2kf)))
-    :effect (and (Activity_1vopca8) (not (Gateway_04hl5tz)))
   )
 
   (:action Process_Order
@@ -51,12 +43,12 @@
 
   (:action Organize_Shipment
     :precondition (and (Activity_1wqi2kf))
-    :effect (and (Gateway_04hl5tz) (not (Activity_1wqi2kf)))
+    :effect (and (Gateway_04hl5tz) (Gateway_04hl5tz_precondition_0) (not (Activity_1wqi2kf)))
   )
 
   (:action Package_Goods
     :precondition (and (Activity_1x6npxm))
-    :effect (and (Gateway_04hl5tz) (not (Activity_1x6npxm)))
+    :effect (and (Gateway_04hl5tz) (Gateway_04hl5tz_precondition_1) (not (Activity_1x6npxm)))
   )
 
   (:action Ship_Order
@@ -72,6 +64,16 @@
   (:action exclusive_Gateway_1yg27bh
     :precondition (and (Gateway_1yg27bh))
     :effect (and (Gateway_1la9igl) (not (Gateway_1yg27bh)))
+  )
+
+  (:action parallel_Gateway_1la9igl
+    :precondition (and (Gateway_1la9igl))
+    :effect (and (Activity_1wqi2kf) (Activity_1x6npxm) (not (Gateway_1la9igl)))
+  )
+
+  (:action parallel_Gateway_04hl5tz
+    :precondition (and (Gateway_04hl5tz) (Gateway_04hl5tz_precondition_0) (Gateway_04hl5tz_precondition_1))
+    :effect (and (Activity_1vopca8) (not (Gateway_04hl5tz)))
   )
 
   (:action goal_Order_Processed
