@@ -1,4 +1,4 @@
-(define (domain place_order_no_flatten)
+(define (domain place_order)
   (:requirements :strips :typing)
   (:types task event gateway)
 

@@ -1,5 +1,5 @@
 (define (problem p01-bpmn-no-flatten)
-                    (:domain place_order_no_flatten)
+                    (:domain place_order)
                     (:objects
             Activity_08v385w Activity_0fclwek Activity_0hpwxsm Activity_1vopca8 Activity_1wqi2kf Activity_1x6npxm - task
     Event_12xfkhi StartEvent_1 - event

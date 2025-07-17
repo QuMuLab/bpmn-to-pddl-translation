@@ -1,4 +1,4 @@
-(define (domain place_order_no_flatten)
+(define (domain order_pizza_2)
   (:requirements :strips :typing)
   (:types task event gateway)
 
