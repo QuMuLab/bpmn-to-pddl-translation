@@ -184,7 +184,6 @@ class BPMNParser:
         outgoing = {}
         incoming = {}
         predicates = set()
-        merged_tasks = set()
         skipped_gateways = set()
 
         def get_merged_id(element_id):
@@ -474,11 +473,6 @@ class BPMNParser:
                 preconditions.add(f"({sanitize_name(start_events[0].id)})")
 
             return preconditions
-        
-        # Identify converging gateways
-        def is_converging_gateway(elem_id):
-            elem = elements_by_id.get(elem_id)
-            return elem and "Gateway" in elem.type and len(incoming.get(elem_id, [])) > 1
         
         used_action_names = {}
         def get_unique_action_name(base):
@@ -807,23 +801,11 @@ class BPMNParser:
                         for branch in sorted(branch_effects):
                             domain += f" {branch}"
 
-                        # # Add inclusive counter increase "when" effects
-                        # diverge_gw_id = sanitize_name(inclusive_diverge_src.id)
-                        # increase_effects = generate_inclusive_increase_effects(diverge_gw_id, counter_levels_increase)
-                        # for effect in increase_effects:
-                        #     domain += f" {effect}"
                     else:
-                        # Even if not inclusive, always remove the task itself (but not branch markers)
+                        # Remove the task itself (but not branch markers)
                         for pre in sorted(standard_preconditions):
                             domain += f" (not {pre})"
 
-                    # ---------------------------------
-                    # # Add decrease counter if immediately before converging inclusive gateway
-                    # if inclusive_converge_tgt and counter_levels_decrease:
-                    #     diverge_gw_id = sanitize_name(converge_to_diverge[inclusive_converge_tgt.id])
-                    #     decrease_effects = generate_inclusive_decrease_effects(diverge_gw_id, counter_levels_decrease)
-                    #     for effect in decrease_effects:
-                    #         domain += f" {effect}"
                     for tgt_id in outgoing.get(e.id, []):
                         tgt_elem = elements_by_id.get(tgt_id)
                         if tgt_elem and "Inclusive Gateway" in tgt_elem.type and len(incoming.get(tgt_elem.id, [])) > 1:
@@ -918,8 +900,8 @@ class BPMNParser:
                 f.write(problem_content)
 
 if __name__ == '__main__':
-    file_path = 'bpmn_diagrams/place_order.bpmn'
-    domain_name = "place_order_no_flatten"
+    file_path = 'bpmn_diagrams/self_serve_restaurant.bpmn'
+    domain_name = file_path.split("/")[1][:-5]
     parser = BPMNParser(file_path)
     parser.parse()
 
@@ -945,9 +927,8 @@ if __name__ == '__main__':
         f.write(pddl_domain)
     print(f"\nPDDL domain saved to {output_file_path}")
 
-    # Identify start and end events
+    # Identify start events
     start_events = [e.id for e in parser.get_elements_by_type("Start Event")]
-    end_events = [e.id for e in parser.get_elements_by_type("End Event")]
 
     # Call the new generate_problem_files method
     parser.generate_problem_files(bpmn_filename, start_events, predicates, domain_name)

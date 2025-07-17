@@ -1,0 +1,481 @@
+{
+
+  "init": "5",
+  "goal": "0",
+  "nodes" : {
+    "20": {
+      "expected_successor": "19",
+      "action": "pay_money",
+      "state": "0x372ba820",
+      "distance": 5,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "pay_money",
+            "successor_id": "19"
+        }
+       ]
+    },
+    "21": {
+      "expected_successor": "20",
+      "action": "place_order",
+      "state": "0x37295ce0",
+      "distance": 6,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "place_order",
+            "successor_id": "20"
+        }
+       ]
+    },
+    "2": {
+      "expected_successor": "1",
+      "action": "inform_employee",
+      "state": "0x372adaf0",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "inform_employee",
+            "successor_id": "1"
+        }
+       ]
+    },
+    "1": {
+      "expected_successor": "0",
+      "action": "goal_meal_prepared",
+      "state": "0x372ad9f0",
+      "distance": 1,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "goal_meal_prepared",
+            "successor_id": "0"
+        }
+       ]
+    },
+    "0": {
+      "expected_successor": false,
+      "action": "---",
+      "state": "0x372a94f0",
+      "distance": 0,
+      "is_relevant": 1,
+      "is_goal": 1,
+      "is_sc": 1,
+      "successors": [
+
+       ]
+    },
+    "3": {
+      "expected_successor": "2",
+      "action": "place_meal_in_hatch",
+      "state": "0x372b1a20",
+      "distance": 3,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "place_meal_in_hatch",
+            "successor_id": "2"
+        }
+       ]
+    },
+    "4": {
+      "expected_successor": "3",
+      "action": "prepare_meal",
+      "state": "0x372ae530",
+      "distance": 4,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "prepare_meal",
+            "successor_id": "3"
+        }
+       ]
+    },
+    "5": {
+      "expected_successor": "4",
+      "action": "start_process",
+      "state": "0x372affa0",
+      "distance": 5,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "start_process_DETDUP_1",
+            "successor_id": "23"
+        },
+        {
+            "outcome_label": "start_process_DETDUP_2",
+            "successor_id": "14"
+        },
+        {
+            "outcome_label": "start_process_DETDUP_3",
+            "successor_id": "4"
+        }
+       ]
+    },
+    "7": {
+      "expected_successor": "6",
+      "action": "hand_over_meal",
+      "state": "0x372b4d70",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "hand_over_meal",
+            "successor_id": "6"
+        }
+       ]
+    },
+    "14": {
+      "expected_successor": "13",
+      "action": "enter_order",
+      "state": "0x372bada0",
+      "distance": 9,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "enter_order",
+            "successor_id": "13"
+        }
+       ]
+    },
+    "8": {
+      "expected_successor": "7",
+      "action": "event_eventbasedgateway_1qyi8l9",
+      "state": "0x372b1c40",
+      "distance": 3,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "event_eventbasedgateway_1qyi8l9_DETDUP_1",
+            "successor_id": "7"
+        },
+        {
+            "outcome_label": "event_eventbasedgateway_1qyi8l9_DETDUP_2",
+            "successor_id": "15"
+        }
+       ]
+    },
+    "9": {
+      "expected_successor": "8",
+      "action": "set_off_buzzer",
+      "state": "0x372b59f0",
+      "distance": 4,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "set_off_buzzer",
+            "successor_id": "8"
+        }
+       ]
+    },
+    "10": {
+      "expected_successor": "9",
+      "action": "inform_chef",
+      "state": "0x372b4a30",
+      "distance": 5,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "inform_chef",
+            "successor_id": "9"
+        }
+       ]
+    },
+    "15": {
+      "expected_successor": "8",
+      "action": "call_guest",
+      "state": "0x372b3290",
+      "distance": 4,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "call_guest",
+            "successor_id": "8"
+        }
+       ]
+    },
+    "6": {
+      "expected_successor": "0",
+      "action": "goal_order_processed",
+      "state": "0x372b1c80",
+      "distance": 1,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "goal_order_processed",
+            "successor_id": "0"
+        }
+       ]
+    },
+    "11": {
+      "expected_successor": "10",
+      "action": "hand_over_buzzer",
+      "state": "0x372b4b70",
+      "distance": 6,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "hand_over_buzzer",
+            "successor_id": "10"
+        }
+       ]
+    },
+    "12": {
+      "expected_successor": "11",
+      "action": "set_up_buzzer",
+      "state": "0x372b5480",
+      "distance": 7,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "set_up_buzzer",
+            "successor_id": "11"
+        }
+       ]
+    },
+    "13": {
+      "expected_successor": "12",
+      "action": "collect_money",
+      "state": "0x372b6600",
+      "distance": 8,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "collect_money",
+            "successor_id": "12"
+        }
+       ]
+    },
+    "18": {
+      "expected_successor": "17",
+      "action": "get_meal",
+      "state": "0x372bfe70",
+      "distance": 3,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "get_meal",
+            "successor_id": "17"
+        }
+       ]
+    },
+    "19": {
+      "expected_successor": "18",
+      "action": "take_buzzer",
+      "state": "0x372b2c30",
+      "distance": 4,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "take_buzzer",
+            "successor_id": "18"
+        }
+       ]
+    },
+    "17": {
+      "expected_successor": "16",
+      "action": "eat_meal",
+      "state": "0x372bfde0",
+      "distance": 2,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "eat_meal",
+            "successor_id": "16"
+        }
+       ]
+    },
+    "16": {
+      "expected_successor": "0",
+      "action": "goal_not_hungry_anymore",
+      "state": "0x372b33f0",
+      "distance": 1,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "goal_not_hungry_anymore",
+            "successor_id": "0"
+        }
+       ]
+    },
+    "22": {
+      "expected_successor": "21",
+      "action": "choose_dish",
+      "state": "0x372bff50",
+      "distance": 7,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "choose_dish",
+            "successor_id": "21"
+        }
+       ]
+    },
+    "23": {
+      "expected_successor": "22",
+      "action": "enter_restaurant",
+      "state": "0x372bf7c0",
+      "distance": 8,
+      "is_relevant": 0,
+      "is_goal": 0,
+      "is_sc": 1,
+      "successors": [
+        {
+            "outcome_label": "enter_restaurant",
+            "successor_id": "22"
+        }
+       ]
+    }
+  },
+  "edges" : [
+      ["20", ">", "19"],
+      ["21", ">", "20"],
+      ["2", ">", "1"],
+      ["1", ">", "0"],
+      ["3", ">", "2"],
+      ["4", ">", "3"],
+      ["5", ">", "23"],
+      ["5", ">", "14"],
+      ["5", ">", "4"],
+      ["7", ">", "6"],
+      ["14", ">", "13"],
+      ["8", ">", "7"],
+      ["8", ">", "15"],
+      ["9", ">", "8"],
+      ["10", ">", "9"],
+      ["15", ">", "8"],
+      ["6", ">", "0"],
+      ["11", ">", "10"],
+      ["12", ">", "11"],
+      ["13", ">", "12"],
+      ["18", ">", "17"],
+      ["19", ">", "18"],
+      ["17", ">", "16"],
+      ["16", ">", "0"],
+      ["22", ">", "21"],
+      ["23", ">", "22"]
+  ],
+  "states" : {
+    "0x372ba820": [
+      "Atom task_12h2fs9()"
+    ],
+    "0x37295ce0": [
+      "Atom intermediatecatchevent_1nu2fvu()"
+    ],
+    "0x372adaf0": [
+      "Atom task_0ot5dif()"
+    ],
+    "0x372ad9f0": [
+      "Atom endevent_1pmnzaw()"
+    ],
+    "0x372a94f0": [
+      "Atom done()"
+    ],
+    "0x372b1a20": [
+      "Atom task_1tdsk5o()"
+    ],
+    "0x372ae530": [
+      "Atom startevent_0zymmrx()"
+    ],
+    "0x372affa0": [
+      "NegatedAtom startevent_02hitoh()",
+      "NegatedAtom startevent_0zymmrx()",
+      "NegatedAtom startevent_1jrp9jr()",
+      "NegatedAtom started()"
+    ],
+    "0x372b4d70": [
+      "Atom intermediatecatchevent_1rch6yh()"
+    ],
+    "0x372bada0": [
+      "Atom startevent_02hitoh()"
+    ],
+    "0x372b1c40": [
+      "Atom eventbasedgateway_1qyi8l9()"
+    ],
+    "0x372b59f0": [
+      "Atom intermediatecatchevent_1pl0nlh()"
+    ],
+    "0x372b4a30": [
+      "Atom task_1wgretj()"
+    ],
+    "0x372b3290": [
+      "Atom intermediatecatchevent_0nhl104()"
+    ],
+    "0x372b1c80": [
+      "Atom endevent_1mxdcfl()"
+    ],
+    "0x372b4b70": [
+      "Atom task_0ttgn0d()"
+    ],
+    "0x372b5480": [
+      "Atom task_03wsmkw()"
+    ],
+    "0x372b6600": [
+      "Atom task_1ng51gy()"
+    ],
+    "0x372bfe70": [
+      "Atom intermediatecatchevent_1r5wlb4()"
+    ],
+    "0x372b2c30": [
+      "Atom task_1jlgbwe()"
+    ],
+    "0x372bfde0": [
+      "Atom task_07amhtq()"
+    ],
+    "0x372b33f0": [
+      "Atom endevent_0t0z07x()"
+    ],
+    "0x372bff50": [
+      "Atom task_1udyby3()"
+    ],
+    "0x372bf7c0": [
+      "Atom startevent_1jrp9jr()"
+    ]
+   }
+}

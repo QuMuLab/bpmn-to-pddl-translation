@@ -6,7 +6,7 @@
     "0": {
       "expected_successor": false,
       "action": "---",
-      "state": "0x28ac6dc0",
+      "state": "0xfbdef30",
       "distance": 0,
       "is_relevant": 1,
       "is_goal": 1,
@@ -18,7 +18,7 @@
     "13": {
       "expected_successor": "4",
       "action": "inclusive_converge_inclusivegateway_1dgb4sg",
-      "state": "0x28add170",
+      "state": "0xfbf53a0",
       "distance": 5,
       "is_relevant": 0,
       "is_goal": 0,
@@ -33,7 +33,7 @@
     "16": {
       "expected_successor": "15",
       "action": "inclusive_increase_inclusivegateway_0p2e5vq",
-      "state": "0x28ad3200",
+      "state": "0xfbeb450",
       "distance": 8,
       "is_relevant": 0,
       "is_goal": 0,
@@ -48,7 +48,7 @@
     "15": {
       "expected_successor": "14",
       "action": "insure_parcel",
-      "state": "0x28ad24f0",
+      "state": "0xfbee9b0",
       "distance": 7,
       "is_relevant": 0,
       "is_goal": 0,
@@ -63,7 +63,7 @@
     "1": {
       "expected_successor": "0",
       "action": "goal_shipment_prepared",
-      "state": "0x28acc270",
+      "state": "0xfbecf10",
       "distance": 1,
       "is_relevant": 0,
       "is_goal": 0,
@@ -78,7 +78,7 @@
     "2": {
       "expected_successor": "1",
       "action": "prepare_for_picking_up_goods",
-      "state": "0x28acff60",
+      "state": "0xfbe8190",
       "distance": 2,
       "is_relevant": 0,
       "is_goal": 0,
@@ -93,7 +93,7 @@
     "3": {
       "expected_successor": "2",
       "action": "parallel_exclusivegateway_0z5sib0",
-      "state": "0x28acca70",
+      "state": "0xfbe4ca0",
       "distance": 3,
       "is_relevant": 0,
       "is_goal": 0,
@@ -108,7 +108,7 @@
     "4": {
       "expected_successor": "3",
       "action": "exclusive_exclusivegateway_1ouv9kf",
-      "state": "0x28ad5e00",
+      "state": "0xfbee030",
       "distance": 4,
       "is_relevant": 0,
       "is_goal": 0,
@@ -123,7 +123,7 @@
     "5": {
       "expected_successor": "4",
       "action": "select_logistic_company_and_place_order",
-      "state": "0x28ad6060",
+      "state": "0xfbee290",
       "distance": 5,
       "is_relevant": 0,
       "is_goal": 0,
@@ -138,7 +138,7 @@
     "6": {
       "expected_successor": "5",
       "action": "get_3_offers_from_logistic_companies",
-      "state": "0x28ad5b90",
+      "state": "0xfbeddc0",
       "distance": 6,
       "is_relevant": 0,
       "is_goal": 0,
@@ -153,7 +153,7 @@
     "24": {
       "expected_successor": "14",
       "action": "write_package_label",
-      "state": "0x28ad22c0",
+      "state": "0xfbea4b0",
       "distance": 7,
       "is_relevant": 0,
       "is_goal": 0,
@@ -168,7 +168,7 @@
     "26": {
       "expected_successor": "16",
       "action": "inclusive_diverge_inclusivegateway_0p2e5vq",
-      "state": "0x28ada350",
+      "state": "0xfbf2580",
       "distance": 9,
       "is_relevant": 0,
       "is_goal": 0,
@@ -191,7 +191,7 @@
     "27": {
       "expected_successor": "6",
       "action": "exclusive_special_sandling_",
-      "state": "0x28ad9000",
+      "state": "0xfbf1230",
       "distance": 7,
       "is_relevant": 0,
       "is_goal": 0,
@@ -210,7 +210,7 @@
     "28": {
       "expected_successor": "27",
       "action": "clarify_shipment_method",
-      "state": "0x28ad94a0",
+      "state": "0xfbf16d0",
       "distance": 8,
       "is_relevant": 0,
       "is_goal": 0,
@@ -225,7 +225,7 @@
     "29": {
       "expected_successor": "28",
       "action": "package_goods",
-      "state": "0x28ab52b0",
+      "state": "0xfbcd370",
       "distance": 9,
       "is_relevant": 0,
       "is_goal": 0,
@@ -240,7 +240,7 @@
     "30": {
       "expected_successor": "29",
       "action": "parallel_parallelgateway_02fgrfq",
-      "state": "0x28adb4b0",
+      "state": "0xfbf0f40",
       "distance": 10,
       "is_relevant": 0,
       "is_goal": 0,
@@ -255,7 +255,7 @@
     "31": {
       "expected_successor": "30",
       "action": "activate_parallelgateway_02fgrfq",
-      "state": "0x28adb620",
+      "state": "0xfbf38b0",
       "distance": 11,
       "is_relevant": 0,
       "is_goal": 0,
@@ -270,7 +270,7 @@
     "32": {
       "expected_successor": "31",
       "action": "start_ship_goods",
-      "state": "0x28adb7d0",
+      "state": "0xfbf3aa0",
       "distance": 12,
       "is_relevant": 0,
       "is_goal": 0,
@@ -285,7 +285,7 @@
     "14": {
       "expected_successor": "13",
       "action": "inclusive_decrease_inclusivegateway_0p2e5vq",
-      "state": "0x28ad3440",
+      "state": "0xfbeb670",
       "distance": 6,
       "is_relevant": 0,
       "is_goal": 0,
@@ -300,7 +300,7 @@
     "25": {
       "expected_successor": "24",
       "action": "inclusive_increase_inclusivegateway_0p2e5vq",
-      "state": "0x28ae2240",
+      "state": "0xfbfa5b0",
       "distance": 8,
       "is_relevant": 0,
       "is_goal": 0,
@@ -338,18 +338,18 @@
       ["25", ">", "24"]
   ],
   "states" : {
-    "0x28ac6dc0": [
+    "0xfbdef30": [
       "Atom done()"
     ],
-    "0x28add170": [
-      "Atom test1()",
+    "0xfbf53a0": [
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_0()",
       "Atom at_least_one_branch_inclusivegateway_0p2e5vq()",
       "Atom inclusivegateway_1dgb4sg()"
     ],
-    "0x28ad3200": [
-      "Atom test1()",
+    "0xfbeb450": [
       "Atom increase_inclusivegateway_0p2e5vq()",
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_12j0pib()",
       "Atom task_12j0pib()",
@@ -357,8 +357,8 @@
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_1()",
       "Atom at_least_one_branch_inclusivegateway_0p2e5vq()"
     ],
-    "0x28ad24f0": [
-      "Atom test1()",
+    "0xfbee9b0": [
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_12j0pib()",
       "Atom task_12j0pib()",
@@ -366,31 +366,31 @@
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_1()",
       "Atom at_least_one_branch_inclusivegateway_0p2e5vq()"
     ],
-    "0x28acc270": [
+    "0xfbecf10": [
       "Atom endevent_1fx9yp3()"
     ],
-    "0x28acff60": [
+    "0xfbe8190": [
       "Atom task_0sl26uo()"
     ],
-    "0x28acca70": [
-      "Atom test1()",
-      "Atom test2()",
+    "0xfbe4ca0": [
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
+      "Atom exclusivegateway_0z5sib0_precondition_1()",
       "Atom exclusivegateway_0z5sib0()"
     ],
-    "0x28ad5e00": [
-      "Atom test1()",
+    "0xfbee030": [
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "Atom exclusivegateway_1ouv9kf()"
     ],
-    "0x28ad6060": [
-      "Atom test1()",
-      "Atom task_0s79ile()"
+    "0xfbee290": [
+      "Atom task_0s79ile()",
+      "Atom exclusivegateway_0z5sib0_precondition_0()"
     ],
-    "0x28ad5b90": [
-      "Atom test1()",
-      "Atom task_0e6hvnj()"
+    "0xfbeddc0": [
+      "Atom task_0e6hvnj()",
+      "Atom exclusivegateway_0z5sib0_precondition_0()"
     ],
-    "0x28ad22c0": [
-      "Atom test1()",
+    "0xfbea4b0": [
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
       "Atom task_0jsoxba()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_0()",
@@ -398,34 +398,34 @@
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_1()",
       "Atom at_least_one_branch_inclusivegateway_0p2e5vq()"
     ],
-    "0x28ada350": [
-      "Atom test1()",
+    "0xfbf2580": [
       "Atom inclusivegateway_0p2e5vq()",
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_12j0pib()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_2()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_1()"
     ],
-    "0x28ad9000": [
-      "Atom test1()",
+    "0xfbf1230": [
       "Atom exclusivegateway_1mpgzhg()",
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_12j0pib()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_2()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_1()"
     ],
-    "0x28ad94a0": [
+    "0xfbf16d0": [
       "Atom task_0vaxgaa()",
-      "Atom test1()",
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_12j0pib()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_2()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_1()"
     ],
-    "0x28ab52b0": [
+    "0xfbcd370": [
       "Atom task_0vaxgaa()",
       "Atom task_05ftug5()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
@@ -434,7 +434,7 @@
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_2()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_1()"
     ],
-    "0x28adb4b0": [
+    "0xfbf0f40": [
       "Atom parallelgateway_02fgrfq()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_0()",
@@ -442,7 +442,7 @@
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_2()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_1()"
     ],
-    "0x28adb620": [
+    "0xfbf38b0": [
       "Atom startevent_1()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_0()",
@@ -450,7 +450,7 @@
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_2()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_1()"
     ],
-    "0x28adb7d0": [
+    "0xfbf3aa0": [
       "NegatedAtom started()",
       "NegatedAtom startevent_1()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
@@ -459,17 +459,17 @@
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_2()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_1()"
     ],
-    "0x28ad3440": [
-      "Atom test1()",
+    "0xfbeb670": [
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "Atom decrease_inclusivegateway_0p2e5vq()",
       "NegatedAtom inclusive_counter_inclusivegateway_0p2e5vq_2()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_1()",
       "Atom at_least_one_branch_inclusivegateway_0p2e5vq()",
       "Atom inclusivegateway_1dgb4sg()"
     ],
-    "0x28ae2240": [
-      "Atom test1()",
+    "0xfbfa5b0": [
       "Atom increase_inclusivegateway_0p2e5vq()",
+      "Atom exclusivegateway_0z5sib0_precondition_0()",
       "NegatedAtom branch_started_inclusivegateway_0p2e5vq_task_0jsoxba()",
       "Atom task_0jsoxba()",
       "Atom inclusive_counter_inclusivegateway_0p2e5vq_0()",
