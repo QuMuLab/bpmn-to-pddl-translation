@@ -739,10 +739,19 @@ class BPMNParser:
                         if effects:
                             domain += f" {' '.join(sorted(set(effects)))}{pred}"
 
-                        # Handle oneof effects
+                        # Check if task has an outgoing message flow
+                        has_msgflow = any(
+                            f.type == "Message Flow" and f.sourceRef == e.id
+                            for f in self.get_elements_by_type("Message Flow")
+                        )
+
+                        # Handle effects
                         if oneof_effects:
                             unique_effects = list(dict.fromkeys(oneof_effects))
-                            if len(unique_effects) == 1:
+                            if has_msgflow:
+                                # Conjunctive activation for tasks with message flow
+                                domain += f" {' '.join(unique_effects)}{pred}"
+                            elif len(unique_effects) == 1:
                                 domain += f" {unique_effects[0]}{pred}"
                             else:
                                 domain += f" (oneof {' '.join(unique_effects)}{pred})"
@@ -848,9 +857,20 @@ class BPMNParser:
                     # Add normal effects
                     if effects:
                         domain += f" {' '.join(sorted(set(effects)))}{pred}"
+
                     if oneof_effects:
                         unique_effects = list(dict.fromkeys(oneof_effects))
-                        if len(unique_effects) == 1:
+                        
+                        # Check if task has an outgoing message flow
+                        has_msgflow = any(
+                            f.type == "Message Flow" and f.sourceRef == e.id
+                            for f in self.get_elements_by_type("Message Flow")
+                        )
+
+                        if has_msgflow:
+                            # Conjunctive activation for tasks with message flow
+                            domain += f" {' '.join(unique_effects)}{pred}"
+                        elif len(unique_effects) == 1:
                             domain += f" {unique_effects[0]}{pred}"
                         else:
                             domain += f" (oneof {' '.join(unique_effects)}{pred})"

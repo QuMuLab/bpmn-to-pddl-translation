@@ -37,9 +37,9 @@
     (started)
   )
 
-  (:action start_process
-    :precondition (and (not (started)) (not (StartEvent_1jrp9jr)) (not (StartEvent_02hitoh)) (not (StartEvent_0zymmrx)))
-    :effect (and (oneof (StartEvent_1jrp9jr) (StartEvent_02hitoh) (StartEvent_0zymmrx)) (started))
+  (:action start_Hunger_noticed
+    :precondition (and (not (started))(not (StartEvent_1jrp9jr)))
+    :effect (and (StartEvent_1jrp9jr) (started))
   )
 
   (:action Enter_restaurant
@@ -54,7 +54,7 @@
 
   (:action Place_order
     :precondition (and (IntermediateCatchEvent_1nu2fvu))
-    :effect (and (Task_12h2fs9) (not (IntermediateCatchEvent_1nu2fvu)))
+    :effect (and (oneof (StartEvent_02hitoh) (Task_12h2fs9)) (not (IntermediateCatchEvent_1nu2fvu)))
   )
 
   (:action Pay_money
@@ -69,7 +69,7 @@
 
   (:action Get_meal
     :precondition (and (IntermediateCatchEvent_1r5wlb4))
-    :effect (and (Task_07amhtq) (not (IntermediateCatchEvent_1r5wlb4)))
+    :effect (and (oneof (IntermediateCatchEvent_1rch6yh) (Task_07amhtq)) (not (IntermediateCatchEvent_1r5wlb4)))
   )
 
   (:action Eat_meal
@@ -99,12 +99,12 @@
 
   (:action Inform_chef
     :precondition (and (Task_1wgretj))
-    :effect (and (IntermediateCatchEvent_1pl0nlh) (not (Task_1wgretj)))
+    :effect (and (oneof (IntermediateCatchEvent_1pl0nlh) (StartEvent_0zymmrx)) (not (Task_1wgretj)))
   )
 
   (:action Set_off_buzzer
     :precondition (and (IntermediateCatchEvent_1pl0nlh))
-    :effect (and (EventBasedGateway_1qyi8l9) (not (IntermediateCatchEvent_1pl0nlh)))
+    :effect (and (oneof (EventBasedGateway_1qyi8l9) (IntermediateCatchEvent_1r5wlb4)) (not (IntermediateCatchEvent_1pl0nlh)))
   )
 
   (:action Hand_over_meal
@@ -129,7 +129,7 @@
 
   (:action Inform_employee
     :precondition (and (Task_0ot5dif))
-    :effect (and (EndEvent_1pmnzaw) (not (Task_0ot5dif)))
+    :effect (and (oneof (EndEvent_1pmnzaw) (IntermediateCatchEvent_1pl0nlh)) (not (Task_0ot5dif)))
   )
 
   (:action event_EventBasedGateway_1qyi8l9
