@@ -965,7 +965,8 @@ class BPMNParser:
                 f.write(problem_content)
 
 if __name__ == '__main__':
-    file_path = 'bpmn_diagrams/self_serve_restaurant.bpmn'
+    file_name = input("Enter file name (no path): ")
+    file_path = f'bpmn_diagrams/{file_name}'
     domain_name = file_path.split("/")[1][:-5]
     parser = BPMNParser(file_path)
     parser.parse()

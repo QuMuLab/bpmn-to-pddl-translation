@@ -320,6 +320,11 @@ class BPMNParser:
                 predicates.add(pred[1:-1])
 
         domain += "    (done)\n"
+        count = 1
+        for end_event in self.get_elements_by_type("End Event"):
+            domain += f"    (done_{count})\n"
+            count += 1
+
         domain += "    (started)\n"
         domain += "  )\n\n"
 
@@ -902,13 +907,23 @@ class BPMNParser:
                     domain += "  )\n\n"
 
         # End events
+        count = 1
         for end_event in self.get_elements_by_type("End Event"):
             end_id = sanitize_name(end_event.id)
             name = sanitize_name(end_event.name or end_event.id)
             domain += f"  (:action goal_{name}\n"
             domain += f"    :precondition (and ({end_id}))\n"
-            domain += f"    :effect (done)\n"
+            domain += f"    :effect (done_{count})\n"
             domain += "  )\n\n"
+            count += 1
+
+        domain += f"  (:action all_done\n"
+        domain += f"    :precondition (and" 
+        for i in range(0,len(self.get_elements_by_type("End Event"))):
+            domain += f" (done_{i+1})"
+        domain += f")\n"
+        domain += f"    :effect (done)\n"
+        domain += "  )\n\n"
 
         domain += ")"
         return domain, sorted(predicates)

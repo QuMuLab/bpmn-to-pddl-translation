@@ -6,7 +6,7 @@
     "1": {
       "expected_successor": "0",
       "action": "goal_order_processed",
-      "state": "0x1e68b470",
+      "state": "0x1e555470",
       "distance": 1,
       "is_relevant": 0,
       "is_goal": 0,
@@ -21,7 +21,7 @@
     "0": {
       "expected_successor": false,
       "action": "---",
-      "state": "0x1e67ae00",
+      "state": "0x1e544e00",
       "distance": 0,
       "is_relevant": 1,
       "is_goal": 1,
@@ -33,7 +33,7 @@
     "3": {
       "expected_successor": "2",
       "action": "get_meal",
-      "state": "0x1e682560",
+      "state": "0x1e54c560",
       "distance": 3,
       "is_relevant": 0,
       "is_goal": 0,
@@ -52,7 +52,7 @@
     "4": {
       "expected_successor": "3",
       "action": "take_buzzer",
-      "state": "0x1e682280",
+      "state": "0x1e54c280",
       "distance": 4,
       "is_relevant": 0,
       "is_goal": 0,
@@ -67,7 +67,7 @@
     "5": {
       "expected_successor": "4",
       "action": "pay_money",
-      "state": "0x1e682400",
+      "state": "0x1e54c400",
       "distance": 5,
       "is_relevant": 0,
       "is_goal": 0,
@@ -82,7 +82,7 @@
     "6": {
       "expected_successor": "5",
       "action": "place_order",
-      "state": "0x1e684680",
+      "state": "0x1e54e680",
       "distance": 6,
       "is_relevant": 0,
       "is_goal": 0,
@@ -101,7 +101,7 @@
     "7": {
       "expected_successor": "6",
       "action": "choose_dish",
-      "state": "0x1e684840",
+      "state": "0x1e54e840",
       "distance": 7,
       "is_relevant": 0,
       "is_goal": 0,
@@ -116,7 +116,7 @@
     "8": {
       "expected_successor": "7",
       "action": "enter_restaurant",
-      "state": "0x1e684a00",
+      "state": "0x1e54ea00",
       "distance": 8,
       "is_relevant": 0,
       "is_goal": 0,
@@ -131,7 +131,7 @@
     "9": {
       "expected_successor": "8",
       "action": "start_hunger_noticed",
-      "state": "0x1e684bc0",
+      "state": "0x1e54ebc0",
       "distance": 9,
       "is_relevant": 0,
       "is_goal": 0,
@@ -146,7 +146,7 @@
     "11": {
       "expected_successor": "10",
       "action": "eat_meal",
-      "state": "0x1e690ad0",
+      "state": "0x1e55aad0",
       "distance": 2,
       "is_relevant": 0,
       "is_goal": 0,
@@ -161,7 +161,7 @@
     "13": {
       "expected_successor": "12",
       "action": "inform_chef",
-      "state": "0x1e691f10",
+      "state": "0x1e55bf10",
       "distance": 5,
       "is_relevant": 0,
       "is_goal": 0,
@@ -180,7 +180,7 @@
     "19": {
       "expected_successor": "18",
       "action": "call_guest",
-      "state": "0x1e689830",
+      "state": "0x1e553830",
       "distance": 4,
       "is_relevant": 0,
       "is_goal": 0,
@@ -195,7 +195,7 @@
     "18": {
       "expected_successor": "2",
       "action": "event_eventbasedgateway_1qyi8l9",
-      "state": "0x1e6952a0",
+      "state": "0x1e55f2a0",
       "distance": 3,
       "is_relevant": 0,
       "is_goal": 0,
@@ -214,7 +214,7 @@
     "15": {
       "expected_successor": "14",
       "action": "set_up_buzzer",
-      "state": "0x1e691dd0",
+      "state": "0x1e55bdd0",
       "distance": 7,
       "is_relevant": 0,
       "is_goal": 0,
@@ -229,7 +229,7 @@
     "2": {
       "expected_successor": "1",
       "action": "hand_over_meal",
-      "state": "0x1e682300",
+      "state": "0x1e54c300",
       "distance": 2,
       "is_relevant": 0,
       "is_goal": 0,
@@ -244,7 +244,7 @@
     "16": {
       "expected_successor": "15",
       "action": "collect_money",
-      "state": "0x1e6912d0",
+      "state": "0x1e55b2d0",
       "distance": 8,
       "is_relevant": 0,
       "is_goal": 0,
@@ -259,7 +259,7 @@
     "17": {
       "expected_successor": "16",
       "action": "enter_order",
-      "state": "0x1e689e30",
+      "state": "0x1e553e30",
       "distance": 9,
       "is_relevant": 0,
       "is_goal": 0,
@@ -274,7 +274,7 @@
     "12": {
       "expected_successor": "3",
       "action": "set_off_buzzer",
-      "state": "0x1e692120",
+      "state": "0x1e55c120",
       "distance": 4,
       "is_relevant": 0,
       "is_goal": 0,
@@ -293,7 +293,7 @@
     "10": {
       "expected_successor": "0",
       "action": "goal_not_hungry_anymore",
-      "state": "0x1e68fe70",
+      "state": "0x1e559e70",
       "distance": 1,
       "is_relevant": 0,
       "is_goal": 0,
@@ -308,7 +308,7 @@
     "14": {
       "expected_successor": "13",
       "action": "hand_over_buzzer",
-      "state": "0x1e6911e0",
+      "state": "0x1e55b1e0",
       "distance": 6,
       "is_relevant": 0,
       "is_goal": 0,
@@ -323,7 +323,7 @@
     "20": {
       "expected_successor": "12",
       "action": "inform_employee",
-      "state": "0x1e694f70",
+      "state": "0x1e55ef70",
       "distance": 5,
       "is_relevant": 0,
       "is_goal": 0,
@@ -342,7 +342,7 @@
     "21": {
       "expected_successor": "20",
       "action": "place_meal_in_hatch",
-      "state": "0x1e691ce0",
+      "state": "0x1e55bce0",
       "distance": 6,
       "is_relevant": 0,
       "is_goal": 0,
@@ -357,7 +357,7 @@
     "22": {
       "expected_successor": "21",
       "action": "prepare_meal",
-      "state": "0x1e694c80",
+      "state": "0x1e55ec80",
       "distance": 7,
       "is_relevant": 0,
       "is_goal": 0,
@@ -372,7 +372,7 @@
     "23": {
       "expected_successor": "0",
       "action": "goal_meal_prepared",
-      "state": "0x1e693f60",
+      "state": "0x1e55df60",
       "distance": 1,
       "is_relevant": 0,
       "is_goal": 0,
@@ -417,77 +417,77 @@
       ["23", ">", "0"]
   ],
   "states" : {
-    "0x1e68b470": [
+    "0x1e555470": [
       "Atom endevent_1mxdcfl()"
     ],
-    "0x1e67ae00": [
+    "0x1e544e00": [
       "Atom done()"
     ],
-    "0x1e682560": [
+    "0x1e54c560": [
       "Atom intermediatecatchevent_1r5wlb4()"
     ],
-    "0x1e682280": [
+    "0x1e54c280": [
       "Atom task_1jlgbwe()"
     ],
-    "0x1e682400": [
+    "0x1e54c400": [
       "Atom task_12h2fs9()"
     ],
-    "0x1e684680": [
+    "0x1e54e680": [
       "Atom intermediatecatchevent_1nu2fvu()"
     ],
-    "0x1e684840": [
+    "0x1e54e840": [
       "Atom task_1udyby3()"
     ],
-    "0x1e684a00": [
+    "0x1e54ea00": [
       "Atom startevent_1jrp9jr()"
     ],
-    "0x1e684bc0": [
+    "0x1e54ebc0": [
       "NegatedAtom started()",
       "NegatedAtom startevent_1jrp9jr()"
     ],
-    "0x1e690ad0": [
+    "0x1e55aad0": [
       "Atom task_07amhtq()"
     ],
-    "0x1e691f10": [
+    "0x1e55bf10": [
       "Atom task_1wgretj()"
     ],
-    "0x1e689830": [
+    "0x1e553830": [
       "Atom intermediatecatchevent_0nhl104()"
     ],
-    "0x1e6952a0": [
+    "0x1e55f2a0": [
       "Atom eventbasedgateway_1qyi8l9()"
     ],
-    "0x1e691dd0": [
+    "0x1e55bdd0": [
       "Atom task_03wsmkw()"
     ],
-    "0x1e682300": [
+    "0x1e54c300": [
       "Atom intermediatecatchevent_1rch6yh()"
     ],
-    "0x1e6912d0": [
+    "0x1e55b2d0": [
       "Atom task_1ng51gy()"
     ],
-    "0x1e689e30": [
+    "0x1e553e30": [
       "Atom startevent_02hitoh()"
     ],
-    "0x1e692120": [
+    "0x1e55c120": [
       "Atom intermediatecatchevent_1pl0nlh()"
     ],
-    "0x1e68fe70": [
+    "0x1e559e70": [
       "Atom endevent_0t0z07x()"
     ],
-    "0x1e6911e0": [
+    "0x1e55b1e0": [
       "Atom task_0ttgn0d()"
     ],
-    "0x1e694f70": [
+    "0x1e55ef70": [
       "Atom task_0ot5dif()"
     ],
-    "0x1e691ce0": [
+    "0x1e55bce0": [
       "Atom task_1tdsk5o()"
     ],
-    "0x1e694c80": [
+    "0x1e55ec80": [
       "Atom startevent_0zymmrx()"
     ],
-    "0x1e693f60": [
+    "0x1e55df60": [
       "Atom endevent_1pmnzaw()"
     ]
    }
